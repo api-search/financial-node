@@ -1,1 +1,2 @@
-# financial
+## Payments
+A Payments APIs index.
