@@ -1,3 +1,4 @@
+---
 name: Ion Group
 description: >-
   We’re visionary innovators who are delivering mission-critical trading and
@@ -86,3 +87,4 @@ overlays:
   - type: API Evangelist Ratings
     url: overlays/apis-io-search.yml
 aid: ion-group
+---
