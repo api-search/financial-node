@@ -1,0 +1,1123 @@
+---
+openapi: 3.0.1
+info:
+  title: Account Token APIs
+  description: <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABO0AAABvCAYAAACw7DTeAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH5gcWCQkkKYviewAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAABnRFWHRUaXRsZQCo7tInAAAgAElEQVR4nO3dfVxVZb7//9cONxIGdgZyAsoC5wj2U/zlhH2P4COhcSI7E3RKT6bZeFOjZKVOqU1YGdikNd6UqTnezJhGqc1AcyomC+0InpM49hWdAs8IRQEdgxkFRWRL+/vHXnvvte+48QZ55Pv5ePgo9t5r7Wtdd2utz77WdVnsdrsdERERERERERER6TEuu9gJEBEREREREREREU8K2omIiIiIiIiIiPQwCtqJiIiIiIiIiIj0MAraiYiIiIiIiIiI9DAK2omIiIiIiIiIiPQwCtqJiIiIiIiIiIj0MAraiYiIiIiIiIiI9DAK2omIiIiIiIiIiPQwCtqJiIiIiIiIiIj0ML0CvXHi9BlsZ7476x3b7faz3lZERERERORSZ7FYLnYSRETkAguyQNjlVr/v+QTtqr49wZcNJzhta7vgCRMREREREREREbmUXWaBa3/Qh4FX98X8e43FbhoSd6D673xz/BS9ewURbL2My/TLjoiIiIiIiIiIyAVht0PrmTZabG2EXx7Mj6//AdYgx2x2rqDd/3zTSOW3TVwRYiXEGnRREywiIiIiIiIiInKpsLV9R2NzK1eFh/D/9/8BYCxEYWv7jspvm7g8OEgBOxERERERERERkW5kDbqMPiFWjja28I+TrYARtPv7idMA9LYGXJdCRERERERERERELpAQaxAWoOFEC2AE7VrOOBadCLpMc9iJiIiIiIiIiIhcDEGXWVyLwzpmtrO393ERERERERERERG54CzuMN1lFzUhIiIiIiIiIiIi4kNBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR5GQTsREREREREREZEeRkE7ERERERERERGRHkZBOxERERERERERkR7m4gbt7Hbsrn9nv+332rnk0fnc1/lIR3eWmUd67dhbmmlqNP7ZLvzXX5q88txczCfrKNv9Hpvz3qOourGD3bRTz1rqqDhQTdP5TLbP9xr/XC870tJUU05RYR6bC4up6uAQ5PvoIp1zAtTLS1mPy4vOnhdtjVR9Xk7DOZ6Dzsv1QDdorauktKP+/vugpZmmk7qwEBERkQuj10X51uNfUrznA4o+qqSspoEvuJybYvoTf2sK40YOJ7qPBYvFz3Z2O401eyl6t5jCimoqvzhF7+gIEn50I2k/TSV90FUBtjvCW0+sY6fppfBbHmTJz+L8fkdN0VJy3q93vWSxXMfEp6aTfKXjYrki/1csLwEsFixxY8idkUIEduz2SrY6v8diIe5f5zD3lkiv3dvhWDHLF71HhcWChf6ufZvTYAdos9FwuJj3Pyih5G917Ks9Q3RMpOt40wZGEhzUQV6bb2wayin8YAdF++uoqmngC0soSTGhRP9zCsm3Diflet/9mW9Qm0x5X/XFKXqb0pI+yPM4/X4/QGM1JUbZH6xtoCq4L0mx/UkeOZrbb0kgIsjfdpVsnbueXcZfsaZ89biBPlbCiuffowKA/kz41S9c+Xpw6yym5Dv+P23m8yxJM6XXO42H85nx273GH6a6eEUUQwZGEvOjZNKG9Seso7y/xAS8iTy6k+xZeRTiqG/1xJHWP/ysvqNs6zNMyU9lwx/6k3j2SfUVKABgHFRt0QtMebUSIiKJC/+E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">Financial institutions (FIs) or FinTech customers using the account verification product to provide digital payment services can eliminate the risk of storing users' sensitive financial account information using <a href="/products/yodlee/account-token/docs/api#tag/Account-Token">Account Token</a> endpoints. The endpoints allow customers to create an account-specific token that the payment processors can use to retrieve account information.<br><br>Payment processors who have a <code>processorToken</code> can exchange these tokens for account data using <a href="/products/yodlee/account-token/docs/api#tag/Payment-Processor">Payment Processor</a> endpoints.
+  termsOfService: https://developer.yodlee.com/terms/condition
+  contact:
+    email: developer@yodlee.com
+  license:
+    name: Yodlee Developer License
+    url: https://developer.yodlee.com/terms/condition#_Services_1
+  version: 1.1.0
+servers:
+- url: /
+tags:
+- name: Account Token
+  description: 'Account verification customers looking to integrate with one of our payment partners can use the Account Token endpoints. These APIs allow creating a secure processor token for your user''s verified financial accounts. You can then share the processor token with our payment partners to enable them to securely request the user''s account details from Envestnet | Yodlee.<br><br>You will have to set the header before making the API call. The following headers apply to all the APIs:</p><ul><li>Authorization: This header holds the access token</li> <li> Api-Version: 1.1</li></ul><b>Note</b>: If there are any API-specific headers, they are mentioned explicitly in the respective API''s description.<p></p>'
+- name: Auth
+  description: APIs that invoke authentication as a prerequisite for access to our other APIs.
+- name: Payment Processor
+  description: 'Envestnet | Yodlee''s payment processor partners can use the Payment Processor endpoints to access verified account details using the <code>processorToken</code> created and shared by mutual customers. These APIs are only for payment processor partners and not for developers using the Envestnet | Yodlee services to integrate with payment partners. Refer <a href="/products/yodlee/account-token/docs#customers"> here </a> for a guide on working with payment processor partners.<br>As a processor payment partner, you can retrieve the following account information using the <code>processorToken</code>:<ul><li>Account details include account status, account name, full account number, bank transfer code, balance, etc.</li><li>Account holder details include name, email, phone number, address, etc.</li><li>Account balance details.</li></ul><br>You will have to set the header before making the API call. The following headers apply to all the APIs:</p><ul><li>Authorization: This header holds the access token</li> </ul><b>Note</b>: If there are any API-specific headers, they are mentioned explicitly in the respective API''s description.<p></p>'
+paths:
+  /paymentProcessor/token:
+    post:
+      tags:
+      - Account Token
+      summary: Create Account Token
+      description: The create account token service allows you to create a secure <code>processorToken</code> for a user's verified financial account. This <code>processorToken</code> can then be shared with one of our payment processor partners.
+      operationId: generatePaymentProcessorToken
+      requestBody:
+        description: account information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentProcessorTokenRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/PaymentProcessorTokenResponse'
+        "400":
+          description: 'Y007 : Authorization header missing<br>Y008 : Invalid token in authorization header<br>Y833 : Invalid values(s) for accountId<br>Y800 : Invalid value for processor<br>Y813 : accountId should be provided<br>Y813 : processor should be provided'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "401":
+          description: Unauthorized
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+      x-codegen-request-body-name: tokenRequest
+    delete:
+      tags:
+      - Account Token
+      summary: Delete Account Token
+      description: The delete account token service allows you to revoke a previously generated <code>processorToken</code>. It is recommended to use this service when you want to disallow further access to the user's financial account, for instance when a user removes their account from your application.
+      operationId: revokePaymentProcessorToken
+      parameters:
+      - name: processorToken
+        in: header
+        description: The token that you want to delete.
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+          content: {}
+        "400":
+          description: 'Y007 : Authorization header missing<br>Y008 : Invalid token in authorization header<br>Y016 : processorToken header missing'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "401":
+          description: Unauthorized
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+  /auth/token:
+    post:
+      tags:
+      - Auth
+      summary: Generate Access Token
+      description: <b>Generate Access Token using client credential authentication.</b><br>This service returns access tokens required to access Yodlee 1.1 APIs. These tokens are the simplest and easiest of several alternatives for authenticating with Yodlee servers.<br>The most commonly used services obtain data specific to an end user (your customer). For these services, you need a <b>user access token</b>. These are simply tokens created with the user name parameter (<b>loginName</b>) set to the id of your end user.  <i><br><br><b>Note:</b> You determine this id and you must ensure it's unique among all your customers.</i> <br><br>Each token issued has an associated user. The token passed in the http headers explicitly names the user referenced in that API call.<br><br>Some of the APIs do administrative work, and don't reference an end user. <br/>One example of administrative work is key management. Another example is registering a new user explicitly, with <b>POST /user/register</b> call or subscribe to webhook, with <b>POST /config/notifications/events/{eventName}</b>. <br/>To invoke these, you need an <b>admin access token</b>. Create this by passing in your admin user login name in place of a regular user name.<br><br>This service also allows for simplified registration of new users. Any time you pass in a user name not already in use, the system will automatically implicitly create a new user for you. <br>This user will naturally have very few associated details. You can later provide additional user information by calling the <b>PUT user/register service</b>.<br><br><b>Notes:</b><ul><li>The header <code>Authorization</code> does not apply to this service.</li><li>The content type has to be passed as application/x-www-form-urlencoded.<li>Upgrading to client credential authentication requires infrastructure reconfiguration. <li>Customers wishing to switch from another authentication scheme to client credential authentication, please contact Yodlee Client Services.</li><li>Default expiry time of user access token and admin access token is 30 minutes.</li></ul>
+      operationId: generateAccessToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/auth_token_body'
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ClientCredentialTokenResponse'
+        "400":
+          description: 'Y800 : Invalid value for loginName<br>Y806 : Invalid input<br>Y801 : Invalid length for loginName<br>Y303 : clientId or secret is missing<br>Y301 : Invalid clientId or secret<br>Y305 : Access token can be issued only for pre-registered users<br>Y004 : Inactive user<br>Y901 : Service not supported<br>'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "401":
+          description: 'Y016 : loginName header missing<br>Y015 : Unauthorized User<br>Y016 : Api-Version header missing<br>Y020 : Invalid token in authorization header<br>Y027 : Unsupported authentication type'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+    delete:
+      tags:
+      - Auth
+      summary: Delete Token
+      description: This endpoint revokes the token passed in the Authorization header. This service is applicable for JWT-based (and all API key-based) authentication and also client credential (clientId and secret) based authentication. This service does not return a response body. The HTTP response code is 204 (success with no content). <br>Tokens generally have limited lifetime of up to 30 minutes. You will call this service when you finish working with one user, and you want to delete the valid token rather than simply letting it expire.<br><br><b>Note:</b> <li>Revoking an access token (either type, admin or a user token) can take up to 2 minutes, as the tokens are stored on a distributed system.<br/>
+      operationId: deleteToken
+      responses:
+        "204":
+          description: No Content
+          content: {}
+        "401":
+          description: 'Y020 : Invalid token in authorization header<br>Y023 : Token has expired<br>Y016 : Api-Version header missing<br>Y015 : Unauthorized User<br>Y027 : Unsupported authentication type<br>Y007 : Authorization header missing<br>Y020 : Invalid token in authorization header'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+  /partner/paymentProcessor/account/holder:
+    get:
+      tags:
+      - Payment Processor
+      summary: Get Account Holder Details
+      description: 'The get account holder details service retrieves the account holder information such as name, email, phone number, address, etc. of the verified financial account associated with the <code>processorToken</code>. The <code>lastUpdated</code> field indicates when the account information was last updated. We recommend using this service when looking for information related to the account holder(s), for instance, to confirm the account holder''s name. <br><br><b>Note: </b>Remember to include the <code>Authorization</code> header.'
+      operationId: getVerifiedAccountHolder
+      parameters:
+      - name: processorToken
+        in: header
+        description: Token shared by customer to access financial account information.
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/PaymentAccountHolderResponse'
+        "400":
+          description: 'Y007 : Authorization header missing<br>Y008 : Invalid token in authorization header<br>Y800 : Invalid value for processorToken<br>Y016 : processorToken header missing'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "401":
+          description: Unauthorized
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+  /partner/paymentProcessor/account:
+    get:
+      tags:
+      - Payment Processor
+      summary: Get Account Details
+      description: 'The get account details service retrieves account information such as account name, type, status, balance, account number and transfer code (for example, routing number of the bank account in the US) of the verified account associated with the <code>processorToken</code>. The <code>lastUpdated</code> field indicates when the account information was last updated. We recommend using this service when looking for details related to the financial account, for instance, the full account number and bank transfer code for initiating a payment.<br><br><b>Note: </b>Remember to include the <code>Authorization</code> header.'
+      operationId: getVerifiedAccount
+      parameters:
+      - name: processorToken
+        in: header
+        description: Token shared by customer to access financial account information.
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/PaymentAccountResponse'
+        "400":
+          description: 'Y007 : Authorization header missing<br>Y008 : Invalid token in authorization header<br>Y800 : Invalid value for processorToken<br>Y016 : processorToken header missing'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "401":
+          description: Unauthorized
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+  /partner/paymentProcessor/account/balance:
+    get:
+      tags:
+      - Payment Processor
+      summary: Get Account Balance
+      description: 'The get account balance service retrieves the account balance information of the verified account associated with the <code>processorToken</code>. The response returns additional account information including account names, type and status, along with the account balance information. <br>This service forces an update of the account balances. While other services also return the account balances, this service attempts to refresh the account balances in real-time rather than return a cached value. Refer to the <code>lastUpdated</code> field to determine when the account balances were refreshed. We recommend using this service when looking for the latest balance for the account.<br>While posting a debit against an account, it is generally advisable to check the available balance field to verify the availability of sufficient funds. This service returns both available and current balances: <ul><li><b>Available Balance</b> is the amount in the account that is available for spending. The value is aggregated from the FI. For checking accounts with overdrafts, the available balance amount may include the overdraft amount if the FI adds the overdraft balance to the available balance.</li><li><b>Current Balance</b> is the total amount of money in the account, aggregated from the FI.</li></ul><br><b>Note: </b>Remember to include the <code>Authorization</code> header.'
+      operationId: getVerifiedAccountBalance
+      parameters:
+      - name: processorToken
+        in: header
+        description: Token shared by customer to access financial account information.
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/PaymentAccountBalanceResponse'
+        "400":
+          description: 'Y007 : Authorization header missing<br>Y008 : Invalid token in authorization header<br>Y800 : Invalid value for processorToken<br>Y016 : processorToken header missing'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/YodleeError'
+        "401":
+          description: Unauthorized
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      deprecated: false
+components:
+  schemas:
+    PaymentProcessorTokenResponse:
+      title: PaymentProcessorTokenResponse
+      type: object
+      properties:
+        token:
+          type: array
+          description: token
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/AccountToken'
+    AccountToken:
+      title: AccountToken
+      type: object
+      properties:
+        processorToken:
+          type: string
+          description: The unique token that the payment partner can use to make API request to the Envestnet | Yodlee system.
+          readOnly: true
+        accountId:
+          type: integer
+          description: The unique identifier for the user's account.
+          format: int64
+          readOnly: true
+    YodleeError:
+      title: YodleeError
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        errorCode:
+          type: string
+        referenceCode:
+          type: string
+    PaymentProcessorTokenRequest:
+      title: PaymentProcessorTokenRequest
+      required:
+      - accountId
+      - processor
+      type: object
+      properties:
+        accountId:
+          type: array
+          description: The unique identifier for the user's account.
+          items:
+            type: integer
+            format: int64
+        processor:
+          type: string
+          description: The payment processor with whom the customer is integrating.
+    ClientCredentialTokenResponse:
+      title: ClientCredentialTokenResponse
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClientCredentialToken'
+    ClientCredentialToken:
+      title: ClientCredentialToken
+      type: object
+      properties:
+        expiresIn:
+          type: integer
+          description: Time in seconds after which the issued accessToken expires.<br><br><b>Endpoints</b>:<ul><li>POST /auth/token</li></ul>
+          format: int32
+          readOnly: true
+        issuedAt:
+          type: string
+          description: The date and time on which accessToken was created for the customer.<br><br><b>Endpoints</b>:<ul><li>POST /auth/token</li></ul>
+          readOnly: true
+        accessToken:
+          type: string
+          description: Access Token to access YSL 1.1 services.<br><br><b>Endpoints</b>:<ul><li>POST /auth/token</li></ul>
+          readOnly: true
+    PaymentAccountHolderResponse:
+      title: PaymentAccountHolderResponse
+      type: object
+      properties:
+        account:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/PaymentAccountHolder'
+    PaymentAccountHolder:
+      title: PaymentAccountHolder
+      type: object
+      properties:
+        accountStatus:
+          type: string
+          description: The status of the account that is updated by the user through an application or an API.</li><ul><li><b>ACTIVE:</b> All the added aggregated accounts status will be made "ACTIVE" by default.</li><li><b>TO_BE_CLOSED:</b> If the aggregated accounts are not found or closed in the data provider site, Yodlee system marks the status as TO_BE_CLOSED.</li><li><b>INACTIVE:</b> Users can update the status as INACTIVE to stop updating and to stop considering the account in other services.</li><li><b>CLOSED:</b> Users can update the status as CLOSED, if the account is closed with the provider.</li></ul><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - TO_BE_CLOSED
+          - CLOSED
+          - DELETED
+        lastUpdated:
+          type: string
+          description: The date time the account information was last retrieved from the provider site and updated in the Yodlee system.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        accountName:
+          type: string
+          description: The account name as it appears at the site.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        accountType:
+          type: string
+          description: The type of account that is aggregated, i.e., savings, checking, charge, etc. The account type is derived based on the attributes of the account. <br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        profile:
+          $ref: '#/components/schemas/AccountProfileDetail'
+        holder:
+          type: array
+          description: Holder details of the account.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/AccountHolderData'
+        id:
+          type: integer
+          description: The primary key of the account resource and the unique identifier for the account.<br><br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          format: int64
+          readOnly: true
+    AccountProfileDetail:
+      title: AccountProfileDetail
+      type: object
+      properties:
+        identifier:
+          type: array
+          description: Identifiers available in the profile page of the account.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Identifier'
+        address:
+          type: array
+          description: Address available in the profile page of the account.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/AccountAddress'
+        phoneNumber:
+          type: array
+          description: Phone number available in the profile page of the account.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        email:
+          type: array
+          description: Email Id available in the profile page of the account.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Email'
+    Identifier:
+      title: Identifier
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of Identifier
+          readOnly: true
+          enum:
+          - NIE
+          - DNI
+          - EIN
+          - BN
+          - AADHAR
+          - NIN
+          - NRIC
+        value:
+          type: string
+          description: Value of the identifier
+          readOnly: true
+    AccountAddress:
+      title: AccountAddress
+      type: object
+      properties:
+        zip:
+          type: string
+        country:
+          type: string
+        address3:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        sourceType:
+          type: string
+        address1:
+          type: string
+        street:
+          type: string
+        state:
+          type: string
+        type:
+          type: string
+          enum:
+          - HOME
+          - BUSINESS
+          - POBOX
+          - RETAIL
+          - OFFICE
+          - SMALL_BUSINESS
+          - COMMUNICATION
+          - PERMANENT
+          - STATEMENT_ADDRESS
+          - PAYMENT
+          - PAYOFF
+          - UNKNOWN
+    PhoneNumber:
+      title: PhoneNumber
+      type: object
+      properties:
+        type:
+          type: string
+          description: type of phone number
+          readOnly: true
+          enum:
+          - HOME
+          - WORK
+          - LANDLINE
+          - MOBILE
+        value:
+          type: string
+          description: Phone Number
+          readOnly: true
+    Email:
+      title: Email
+      type: object
+      properties:
+        type:
+          type: string
+          readOnly: true
+          enum:
+          - PRIMARY
+          - SECONDARY
+          - PERSONAL
+          - WORK
+          - OTHERS
+        value:
+          type: string
+          readOnly: true
+    AccountHolderData:
+      title: AccountHolderData
+      type: object
+      properties:
+        identifier:
+          type: array
+          description: Identifiers of the account holder.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Identifier'
+        gender:
+          type: string
+          description: Identifiers of the account holder.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        ownership:
+          type: string
+          description: Indicates the ownership of the account.<br><b>Endpoints</b>:<li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          enum:
+          - PRIMARY
+          - SECONDARY
+          - CUSTODIAN
+          - OTHERS
+          - POWER_OF_ATTORNEY
+          - TRUSTEE
+          - JOINT_OWNER
+          - BENEFICIARY
+          - AAS
+          - BUSINESS
+          - DBA
+          - TRUST
+        name:
+          $ref: '#/components/schemas/Name'
+    Name:
+      title: Name
+      type: object
+      properties:
+        middle:
+          type: string
+        last:
+          type: string
+        fullName:
+          type: string
+        first:
+          type: string
+    PaymentAccountResponse:
+      title: PaymentAccountResponse
+      type: object
+      properties:
+        account:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/PaymentAccount'
+    PaymentAccount:
+      title: PaymentAccount
+      type: object
+      properties:
+        accountStatus:
+          type: string
+          description: The status of the account that is updated by the user through an application or an API.</li><ul><li><b>ACTIVE:</b> All the added aggregated accounts status will be made "ACTIVE" by default.</li><li><b>TO_BE_CLOSED:</b> If the aggregated accounts are not found or closed in the data provider site, Yodlee system marks the status as TO_BE_CLOSED.</li><li><b>INACTIVE:</b> Users can update the status as INACTIVE to stop updating and to stop considering the account in other services.</li><li><b>CLOSED:</b> Users can update the status as CLOSED, if the account is closed with the provider.</li></ul><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - TO_BE_CLOSED
+          - CLOSED
+          - DELETED
+        lastUpdated:
+          type: string
+          description: The date time the account information was last retrieved from the provider site and updated in the Yodlee system.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        accountName:
+          type: string
+          description: The account name as it appears at the site.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        accountType:
+          type: string
+          description: The type of account that is aggregated, i.e., savings, checking, charge, etc. The account type is derived based on the attributes of the account. <br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        currentBalance:
+          $ref: '#/components/schemas/Money'
+        id:
+          type: integer
+          description: The primary key of the account resource and the unique identifier for the account.<br><br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          format: int64
+          readOnly: true
+        bankTransferCode:
+          type: array
+          description: Bank and branch identification information.<br><br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li></ul>
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/PaymentBankTransferCodeData'
+        availableBalance:
+          $ref: '#/components/schemas/Money'
+        fullAccountNumberList:
+          $ref: '#/components/schemas/FullAccountNumbers'
+    Money:
+      title: Money
+      required:
+      - amount
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        convertedAmount:
+          type: number
+          format: double
+        currency:
+          type: string
+          enum:
+          - USD
+          - AUD
+          - BRL
+          - CAD
+          - EUR
+          - GBP
+          - HKD
+          - IDR
+          - INR
+          - JPY
+          - NZD
+          - SGD
+          - ZAR
+          - CNY
+          - VND
+          - MYR
+          - CHF
+          - AED
+          - AFA
+          - ALL
+          - AMD
+          - ANG
+          - AOA
+          - ARS
+          - AWG
+          - AZM
+          - BAM
+          - BBD
+          - BDT
+          - BGL
+          - BHD
+          - BIF
+          - BMD
+          - BND
+          - BOB
+          - BSD
+          - BTN
+          - BWP
+          - BYR
+          - BZD
+          - CDF
+          - CLP
+          - COP
+          - CRC
+          - CUP
+          - CVE
+          - CYP
+          - CZK
+          - DJF
+          - DKK
+          - DOP
+          - DZD
+          - EEK
+          - EGP
+          - ERN
+          - ETB
+          - FJD
+          - FKP
+          - GEL
+          - GGP
+          - GHC
+          - GIP
+          - GMD
+          - GNF
+          - GTQ
+          - GYD
+          - HNL
+          - HRK
+          - HTG
+          - HUF
+          - ILS
+          - IMP
+          - IQD
+          - IRR
+          - ISK
+          - JEP
+          - JMD
+          - JOD
+          - KES
+          - KGS
+          - KHR
+          - KMF
+          - KPW
+          - KRW
+          - KWD
+          - KYD
+          - KZT
+          - LAK
+          - LBP
+          - LKR
+          - LRD
+          - LSL
+          - LTL
+          - LVL
+          - LYD
+          - MAD
+          - MDL
+          - MGF
+          - MKD
+          - MMK
+          - MNT
+          - MOP
+          - MRO
+          - MTL
+          - MUR
+          - MVR
+          - MWK
+          - MXN
+          - MZM
+          - NAD
+          - NGN
+          - NIO
+          - NOK
+          - NPR
+          - OMR
+          - PAB
+          - PEN
+          - PGK
+          - PHP
+          - PKR
+          - PLN
+          - PYG
+          - QAR
+          - ROL
+          - RUR
+          - RWF
+          - SAR
+          - SBD
+          - SCR
+          - SDD
+          - SEK
+          - SHP
+          - SIT
+          - SKK
+          - SLL
+          - SOS
+          - SPL
+          - SRG
+          - STD
+          - SVC
+          - SYP
+          - SZL
+          - THB
+          - TJR
+          - TMM
+          - TND
+          - TOP
+          - TRL
+          - TTD
+          - TVD
+          - TWD
+          - TZS
+          - UAH
+          - UGX
+          - UYU
+          - UZS
+          - VEB
+          - VUV
+          - WST
+          - XAF
+          - XAG
+          - XAU
+          - XCD
+          - XDR
+          - XOF
+          - XPD
+          - XPF
+          - XPT
+          - YER
+          - YUM
+          - ZMK
+          - ZWD
+          - ADP
+          - ATS
+          - BEF
+          - BUK
+          - CSD
+          - CSK
+          - DDM
+          - DEM
+          - ECS
+          - ESP
+          - FIM
+          - GRD
+          - GWP
+          - IEP
+          - ITL
+          - LUF
+          - MLF
+          - NLG
+          - PTE
+          - SUR
+          - TPE
+          - UAK
+          - XBA
+          - XBB
+          - XBC
+          - XBD
+          - XEU
+          - XFO
+          - XFU
+          - XGF
+          - XMK
+          - XRM
+          - XTS
+          - YDD
+          - YUD
+          - ZRN
+          - TJS
+          - RON
+          - BGN
+          - BTC
+          - XBT
+          - CNH
+          - RUB
+          - TRY
+          - GHS
+          - TMT
+          - ZMW
+          - VEF
+          - SSP
+          - ALK
+        convertedCurrency:
+          type: string
+          enum:
+          - USD
+          - AUD
+          - BRL
+          - CAD
+          - EUR
+          - GBP
+          - HKD
+          - IDR
+          - INR
+          - JPY
+          - NZD
+          - SGD
+          - ZAR
+          - CNY
+          - VND
+          - MYR
+          - CHF
+          - AED
+          - AFA
+          - ALL
+          - AMD
+          - ANG
+          - AOA
+          - ARS
+          - AWG
+          - AZM
+          - BAM
+          - BBD
+          - BDT
+          - BGL
+          - BHD
+          - BIF
+          - BMD
+          - BND
+          - BOB
+          - BSD
+          - BTN
+          - BWP
+          - BYR
+          - BZD
+          - CDF
+          - CLP
+          - COP
+          - CRC
+          - CUP
+          - CVE
+          - CYP
+          - CZK
+          - DJF
+          - DKK
+          - DOP
+          - DZD
+          - EEK
+          - EGP
+          - ERN
+          - ETB
+          - FJD
+          - FKP
+          - GEL
+          - GGP
+          - GHC
+          - GIP
+          - GMD
+          - GNF
+          - GTQ
+          - GYD
+          - HNL
+          - HRK
+          - HTG
+          - HUF
+          - ILS
+          - IMP
+          - IQD
+          - IRR
+          - ISK
+          - JEP
+          - JMD
+          - JOD
+          - KES
+          - KGS
+          - KHR
+          - KMF
+          - KPW
+          - KRW
+          - KWD
+          - KYD
+          - KZT
+          - LAK
+          - LBP
+          - LKR
+          - LRD
+          - LSL
+          - LTL
+          - LVL
+          - LYD
+          - MAD
+          - MDL
+          - MGF
+          - MKD
+          - MMK
+          - MNT
+          - MOP
+          - MRO
+          - MTL
+          - MUR
+          - MVR
+          - MWK
+          - MXN
+          - MZM
+          - NAD
+          - NGN
+          - NIO
+          - NOK
+          - NPR
+          - OMR
+          - PAB
+          - PEN
+          - PGK
+          - PHP
+          - PKR
+          - PLN
+          - PYG
+          - QAR
+          - ROL
+          - RUR
+          - RWF
+          - SAR
+          - SBD
+          - SCR
+          - SDD
+          - SEK
+          - SHP
+          - SIT
+          - SKK
+          - SLL
+          - SOS
+          - SPL
+          - SRG
+          - STD
+          - SVC
+          - SYP
+          - SZL
+          - THB
+          - TJR
+          - TMM
+          - TND
+          - TOP
+          - TRL
+          - TTD
+          - TVD
+          - TWD
+          - TZS
+          - UAH
+          - UGX
+          - UYU
+          - UZS
+          - VEB
+          - VUV
+          - WST
+          - XAF
+          - XAG
+          - XAU
+          - XCD
+          - XDR
+          - XOF
+          - XPD
+          - XPF
+          - XPT
+          - YER
+          - YUM
+          - ZMK
+          - ZWD
+          - ADP
+          - ATS
+          - BEF
+          - BUK
+          - CSD
+          - CSK
+          - DDM
+          - DEM
+          - ECS
+          - ESP
+          - FIM
+          - GRD
+          - GWP
+          - IEP
+          - ITL
+          - LUF
+          - MLF
+          - NLG
+          - PTE
+          - SUR
+          - TPE
+          - UAK
+          - XBA
+          - XBB
+          - XBC
+          - XBD
+          - XEU
+          - XFO
+          - XFU
+          - XGF
+          - XMK
+          - XRM
+          - XTS
+          - YDD
+          - YUD
+          - ZRN
+          - TJS
+          - RON
+          - BGN
+          - BTC
+          - XBT
+          - CNH
+          - RUB
+          - TRY
+          - GHS
+          - TMT
+          - ZMW
+          - VEF
+          - SSP
+          - ALK
+    PaymentBankTransferCodeData:
+      title: PaymentBankTransferCodeData
+      type: object
+      properties:
+        id:
+          type: string
+          description: The financial institution's branch identification number that is associated with the lender.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li></ul>
+        type:
+          type: string
+          description: 'The payment bank transfer code type varies based on the region of the account originates from. <br>Valid Values: BSB, IFSC, ROUTING_NUMBER, SORT_CODE<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li></ul><b>Applicable Values</b><br>'
+          enum:
+          - BSB
+          - IFSC
+          - ROUTING_NUMBER
+          - SORT_CODE
+    FullAccountNumbers:
+      title: FullAccountNumbers
+      type: object
+      properties:
+        paymentAccountNumber:
+          type: string
+          description: The payment account number is used for payments in all regions, this may be looked as an ACH account number in the US.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li></ul>
+          readOnly: true
+        unmaskedAccountNumber:
+          type: string
+          description: The unmasked account number is same as account number that is used to refer to an account and is not partial or masked.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li></ul>
+          readOnly: true
+    PaymentAccountBalanceResponse:
+      title: PaymentAccountBalanceResponse
+      type: object
+      properties:
+        account:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/PaymentAccountBalance'
+    PaymentAccountBalance:
+      title: PaymentAccountBalance
+      type: object
+      properties:
+        accountStatus:
+          type: string
+          description: The status of the account that is updated by the user through an application or an API.</li><ul><li><b>ACTIVE:</b> All the added aggregated accounts status will be made "ACTIVE" by default.</li><li><b>TO_BE_CLOSED:</b> If the aggregated accounts are not found or closed in the data provider site, Yodlee system marks the status as TO_BE_CLOSED.</li><li><b>INACTIVE:</b> Users can update the status as INACTIVE to stop updating and to stop considering the account in other services.</li><li><b>CLOSED:</b> Users can update the status as CLOSED, if the account is closed with the provider.</li></ul><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - TO_BE_CLOSED
+          - CLOSED
+          - DELETED
+        lastUpdated:
+          type: string
+          description: The date time the account information was last retrieved from the provider site and updated in the Yodlee system.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        accountName:
+          type: string
+          description: The account name as it appears at the site.<br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        accountType:
+          type: string
+          description: The type of account that is aggregated, i.e., savings, checking, charge, etc. The account type is derived based on the attributes of the account. <br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          readOnly: true
+        currentBalance:
+          $ref: '#/components/schemas/Money'
+        id:
+          type: integer
+          description: The primary key of the account resource and the unique identifier for the account.<br><br><b>Endpoints</b>:<ul><li>GET /partner/paymentProcessor/account</li><li>GET /partner/paymentProcessor/account/balance</li><li>GET /partner/paymentProcessor/account/holder</li></ul>
+          format: int64
+          readOnly: true
+        availableBalance:
+          $ref: '#/components/schemas/Money'
+    auth_token_body:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: clientId issued by Yodlee is used to generate the OAuth token for authentication.
+        secret:
+          type: string
+          description: secret issued by Yodlee is used to generate the OAuth token for authentication.

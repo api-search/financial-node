@@ -1,0 +1,3899 @@
+---
+openapi: "3.0.1"
+info:
+  title: "Credit Accelerator API Services"
+  description: "The Envestnet D&A Credit LLC Credit Accelerator solution allows consumers to link their accounts across financial institution(s) and generate a Credit Accelerator File for use in loan underwriting or another credit review and approval process. <br> <br>For more details about our other APIs, please refer to <a href= \" https://developer.envestnet.com/products/yodlee/core-apis/docs/api-reference\">API reference</a> page"
+  termsOfService: "https://developer.yodlee.com/terms/condition"
+  contact:
+    email: "developer@yodlee.com"
+  license:
+    name: "Yodlee Developer License"
+    url: "https://developer.yodlee.com/terms/condition#_Services_1"
+  version: "1.1.0"
+servers:
+- url: "/"
+tags:
+- name: "Auth"
+  description: "Auth API"
+- name: "Configs"
+  description: "Configs API"
+- name: "CreditAcceleratorFile"
+  description: "CreditAcceleratorFile API"
+paths:
+  /creditAccelerator/report/refresh:
+    put:
+      tags:
+      - "CreditAcceleratorFile"
+      summary: "Refresh Credit Accelerator File"
+      description: "This service allows you to refresh the already generated credit accelerator file"
+      operationId: "refreshFile"
+      requestBody:
+        description: "requestBody"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditAcceleratorRefreshRequest"
+        required: true
+      responses:
+        201:
+          description: "Created Successfully"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/CreditAcceleratorFileResponse"
+        400:
+          description: "Y800 : Invalid value for configName<br>Y800 : Invalid value for requestingFirm<br>Y802 : requestingFirm not allowed<br>Y802 : refresh not allowed<br>Y802 : The report is not available, and refresh is not allowed<br>Y806 : Invalid input<br>Y812 : Required field/value - configName missing in the request<br>Y847 : resource cannot be requested, as feature not enabled"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+        500:
+          description: "Y904 : Internal exception"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+      deprecated: false
+  /configs/notifications/events/{eventName}:
+    put:
+      tags:
+      - "Configs"
+      summary: "Update Notification Subscription"
+      description: "The update events service is used to update the callback URL.<br>If the callback URL is invalid or inaccessible, the subscription will be unsuccessful, and an error will be thrown.<br><br><b>Note:</b> <li>The content type has to be passed as application/json for the body parameter. <br>"
+      operationId: "updateSubscribedNotificationEvent"
+      parameters:
+      - name: "eventName"
+        in: "path"
+        description: "Name of the webhook subscription event"
+        required: true
+        schema:
+          type: "string"
+          enum:
+          - "REFRESH"
+          - "DATA_UPDATES"
+          - "AUTO_REFRESH_UPDATES"
+          - "LATEST_BALANCE_UPDATES"
+          - "CREDIT_ACCELERATOR_REPORT_UPDATES"
+      requestBody:
+        description: "eventRequest"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConfigsNotificationEventRequest"
+        required: true
+      responses:
+        204:
+          description: "OK"
+          content: {}
+        400:
+          description: "Y803 : eventName required<br>Y803 : callbackUrl required<br>Y800 : Invalid value for callbackUrl"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+      deprecated: false
+    post:
+      tags:
+      - "Configs"
+      summary: "Subscribe For Notification Event"
+      description: "The subscribe events service is used to subscribe to an event for receiving notifications.<br>The callback URL, where the notification will be posted should be provided to this service.<br>If the callback URL is invalid or inaccessible, the subscription will be unsuccessful, and an error will be thrown.<br>Customers can subscribe to REFRESH,DATA_UPDATES,AUTO_REFRESH_UPDATES,LATEST_BALANCE_UPDATES and CREDIT_ACCELERATOR_REPORT_UPDATES event.<br><br><b>Notes:</b><li>This service is not available in developer sandbox/test environment and will be made available for testing in your dedicated environment, once the contract is signed.<li>The content type has to be passed as application/json for the body parameter.</li>"
+      operationId: "createSubscriptionNotificationEvent"
+      parameters:
+      - name: "eventName"
+        in: "path"
+        description: "Name of the webhook subscription event"
+        required: true
+        schema:
+          type: "string"
+          enum:
+          - "REFRESH"
+          - "DATA_UPDATES"
+          - "AUTO_REFRESH_UPDATES"
+          - "LATEST_BALANCE_UPDATES"
+          - "CREDIT_ACCELERATOR_REPORT_UPDATES"
+      requestBody:
+        description: "eventRequest"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConfigsNotificationEventRequest"
+        required: true
+      responses:
+        201:
+          description: "OK"
+          content: {}
+        400:
+          description: "Y803 : eventName required<br>Y803 : callbackUrl required<br>Y800 : Invalid value for callbackUrl<br>Y901 : Service not supported<br>"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+      deprecated: false
+    delete:
+      tags:
+      - "Configs"
+      summary: "Delete Notification Subscription"
+      description: "The delete events service is used to unsubscribe from an events service.<br>"
+      operationId: "deleteSubscribedNotificationEvent"
+      parameters:
+      - name: "eventName"
+        in: "path"
+        description: "Name of the webhook subscription event"
+        required: true
+        schema:
+          type: "string"
+          enum:
+          - "REFRESH"
+          - "DATA_UPDATES"
+          - "AUTO_REFRESH_UPDATES"
+          - "LATEST_BALANCE_UPDATES"
+          - "CREDIT_ACCELERATOR_REPORT_UPDATES"
+      responses:
+        204:
+          description: "OK"
+          content: {}
+        400:
+          description: "Y803 : eventName required"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+      deprecated: false
+  /creditAccelerator/report/status:
+    get:
+      tags:
+      - "CreditAcceleratorFile"
+      summary: "Get File Status"
+      description: "You can use this service to check the status of the credit accelerator file using either reportId or configName as query parameters where configName will only give the status for latest requested credit accelerator file. We recommend polling at a 2 second interval.<br>"
+      operationId: "getFileStatus"
+      parameters:
+      - name: "configName"
+        in: "query"
+        description: "Unique identifier for the credit accelerator file"
+        required: true
+        allowEmptyValue: false
+        schema:
+          type: "string"
+      - name: "reportId"
+        in: "query"
+        description: "Unique identifier for the credit accelerator file"
+        allowEmptyValue: false
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/CreditAcceleratorStatusResponse"
+        400:
+          description: "Y812 : Required field/value - configName or reportId missing in the request<br>Y802 : configName and reportId together is not allowed"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+        500:
+          description: "Y904 : Internal exception"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+      deprecated: false
+  /configs/notifications/events:
+    get:
+      tags:
+      - "Configs"
+      summary: "Get Subscribed Notification Events"
+      description: "The get events service provides the list of events for which consumers subscribed to receive notifications. <br>"
+      operationId: "getSubscribedNotificationEvents"
+      parameters:
+      - name: "eventName"
+        in: "query"
+        description: "Name of the webhook subscription event"
+        allowEmptyValue: false
+        schema:
+          type: "string"
+          enum:
+          - "REFRESH"
+          - "DATA_UPDATES"
+          - "AUTO_REFRESH_UPDATES"
+          - "LATEST_BALANCE_UPDATES"
+          - "CREDIT_ACCELERATOR_REPORT_UPDATES"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/ConfigsNotificationResponse"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+      deprecated: false
+  /auth/token:
+    post:
+      tags:
+      - "Auth"
+      summary: "Generate Access Token"
+      description: "<b>Generate Access Token using client credential authentication.</b><br>This service returns access tokens required to access Yodlee 1.1 APIs. These tokens are the simplest and easiest of several alternatives for authenticating with Yodlee servers.<br>The most commonly used services obtain data specific to an end user (your customer). For these services, you need a <b>user access token</b>. These are simply tokens created with the user name parameter (<b>loginName</b>) set to the id of your end user.  <i><br><br><b>Note:</b> You determine this id and you must ensure it's unique among all your customers.</i> <br><br>Each token issued has an associated user. The token passed in the http headers explicitly names the user referenced in that API call.<br><br>Some of the APIs do administrative work, and don't reference an end user. <br/>One example of administrative work is key management. Another example is registering a new user explicitly, with <b>POST /user/register</b> call or subscribe to webhook, with <b>POST /config/notifications/events/{eventName}</b>. <br/>To invoke these, you need an <b>admin access token</b>. Create this by passing in your admin user login name in place of a regular user name.<br><br>This service also allows for simplified registration of new users. Any time you pass in a user name not already in use, the system will automatically implicitly create a new user for you. <br>This user will naturally have very few associated details. You can later provide additional user information by calling the <b>PUT user/register service</b>.<br><br><b>Notes:</b><ul><li>The header <code>Authorization</code> does not apply to this service.</li><li>The content type has to be passed as application/x-www-form-urlencoded.<li>Upgrading to client credential authentication requires infrastructure reconfiguration. <li>Customers wishing to switch from another authentication scheme to client credential authentication, please contact Yodlee Client Services.</li><li>Default expiry time of user access token and admin access token is 30 minutes.</li></ul>"
+      operationId: "generateAccessToken"
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                clientId:
+                  type: "string"
+                  description: "clientId issued by Yodlee is used to generate the OAuth token for authentication."
+                secret:
+                  type: "string"
+                  description: "secret issued by Yodlee is used to generate the OAuth token for authentication."
+      responses:
+        201:
+          description: "OK"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/ClientCredentialTokenResponse"
+        400:
+          description: "Y800 : Invalid value for loginName<br>Y806 : Invalid input<br>Y801 : Invalid length for loginName<br>Y303 : clientId or secret is missing<br>Y301 : Invalid clientId or secret<br>Y305 : Access token can be issued only for pre-registered users<br>Y004 : Inactive user<br>Y901 : Service not supported<br>"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Y016 : loginName header missing<br>Y015 : Unauthorized User<br>Y016 : Api-Version header missing<br>Y020 : Invalid token in authorization header<br>Y027 : Unsupported authentication type"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        404:
+          description: "Not Found"
+          content: {}
+      deprecated: false
+    delete:
+      tags:
+      - "Auth"
+      summary: "Delete Token"
+      description: "This endpoint revokes the token passed in the Authorization header. This service is applicable for JWT-based (and all API key-based) authentication and also client credential (clientId and secret) based authentication. This service does not return a response body. The HTTP response code is 204 (success with no content). <br>Tokens generally have limited lifetime of up to 30 minutes. You will call this service when you finish working with one user, and you want to delete the valid token rather than simply letting it expire.<br><br><b>Note:</b> <li>Revoking an access token (either type, admin or a user token) can take up to 2 minutes, as the tokens are stored on a distributed system.<br/>"
+      operationId: "deleteToken"
+      responses:
+        204:
+          description: "No Content"
+          content: {}
+        401:
+          description: "Y020 : Invalid token in authorization header<br>Y023 : Token has expired<br>Y016 : Api-Version header missing<br>Y015 : Unauthorized User<br>Y027 : Unsupported authentication type<br>Y007 : Authorization header missing<br>Y020 : Invalid token in authorization header"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        404:
+          description: "Not Found"
+          content: {}
+      deprecated: false
+  /creditAccelerator/report/statements:
+    get:
+      tags:
+      - "CreditAcceleratorFile"
+      summary: "Get Statements"
+      description: "Partner can poll the below API to see a list of financial statements which were downloading during the application process on behalf of the consumer. We recommend polling at a 2 second interval.<br>"
+      operationId: "getFileStatements"
+      parameters:
+      - name: "configName"
+        in: "query"
+        description: "The config name using which the credit accelerator file generation was requested"
+        required: true
+        allowEmptyValue: false
+        schema:
+          type: "string"
+      - name: "reportId"
+        in: "query"
+        description: "Unique identifier for the credit accelerator file"
+        allowEmptyValue: false
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/CreditAcceleratorStatementResponse"
+        400:
+          description: "Y806 : Invalid input<br>Y812 : Required field/value - configName or reportId missing in the request<br>Y802 : configName and reportId together is not allowed"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+        500:
+          description: "Y904 : Internal exception"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+      deprecated: false
+  /creditAccelerator/report:
+    get:
+      tags:
+      - "CreditAcceleratorFile"
+      summary: "Get Credit Accelerator File"
+      description: "Using this service you can retrieve the Credit Accelerator file in JSON or PDF format. Once the file generation has finished processing i.e. status is COMPLETED, you can retrieve call this api service by passign values \"json\" or pdf\" in \"format\" query parameter"
+      operationId: "getFile"
+      parameters:
+      - name: "configName"
+        in: "query"
+        description: "The config name using which the credit accelerator file generation was requested"
+        required: true
+        allowEmptyValue: false
+        schema:
+          type: "string"
+      - name: "format"
+        in: "query"
+        description: "Format in which credit accelerator report shall be provided. Valid values JSON and PDF"
+        allowEmptyValue: false
+        schema:
+          type: "string"
+      - name: "reportId"
+        in: "query"
+        description: "Unique identifier for the credit accelerator file"
+        allowEmptyValue: false
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/CreditAcceleratorFile"
+        400:
+          description: "Y800 : Invalid value for format<br>Y812 : Required field/value - configName or reportId missing in the request<br>Y802 : configName and reportId together is not allowed"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+        500:
+          description: "Y904 : Internal exception"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+      deprecated: false
+  /creditAccelerator/report/generate:
+    post:
+      tags:
+      - "CreditAcceleratorFile"
+      summary: "Generate Credit Accelerator File"
+      description: "This service allows you to submit a request to generate credit accelerator file for already linked accounts"
+      operationId: "generateFile"
+      requestBody:
+        description: "requestBody"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditAcceleratorGenerateRequest"
+        required: true
+      responses:
+        201:
+          description: "Created Successfully"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/CreditAcceleratorFileResponse"
+        400:
+          description: "Y800 : Invalid value for configName<br>Y800 : Invalid value for requestingFirm<br>Y800 : Invalid value for accountIds<br>Y806 : Invalid input<br>Y812 : Required field/value - configName missing in the request<br>Y812 : Required field/value - accountIds missing in the request<br>Y847 : resource cannot be requested, as feature not enabled"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+        401:
+          description: "Unauthorized"
+          content: {}
+        404:
+          description: "Not Found"
+          content: {}
+        500:
+          description: "Y904 : Internal exception"
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/YodleeError"
+      deprecated: false
+components:
+  schemas:
+    CreditAcceleratorStatement:
+      title: "CreditAcceleratorStatement"
+      type: "object"
+      properties:
+        accountId:
+          type: "integer"
+          description: "The primary key of the account resource and the unique identifier for the account.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts </li><li>GET accounts/{accountId}</li><li>GET investmentOptions</li><li>GET accounts/historicalBalances</li><li>POST accounts</ul>"
+          format: "int64"
+          readOnly: true
+        additionalStatus:
+          type: "string"
+        documents:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorDocument"
+        status:
+          type: "string"
+          description: "Status of the doc download for given configName or reportId"
+          readOnly: true
+    CreateConfigsNotificationEventRequest:
+      title: "CreateConfigsNotificationEventRequest"
+      required:
+      - "event"
+      type: "object"
+      properties:
+        event:
+          $ref: "#/components/schemas/CreateConfigsNotificationEvent"
+    Email:
+      title: "Email"
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          readOnly: true
+          enum:
+          - "PRIMARY"
+          - "SECONDARY"
+          - "PERSONAL"
+          - "WORK"
+          - "OTHERS"
+        value:
+          type: "string"
+          readOnly: true
+    CreditAcceleratorPaymentProfile:
+      title: "CreditAcceleratorPaymentProfile"
+      type: "object"
+      properties:
+        identifier:
+          $ref: "#/components/schemas/PaymentIdentifier"
+        address:
+          type: "array"
+          description: "The address of the lender to which the monthly payments or the loan payoff amount should be paid. <br><b>Additional Details:</b>The address field applies only to the student loan account type.<br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAccountAddress"
+        paymentBankTransferCode:
+          type: "array"
+          description: "The additional information for payment bank transfer code.<br><br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorPaymentBankTransferCode"
+    CreditAcceleratorHolder:
+      title: "CreditAcceleratorHolder"
+      type: "object"
+      properties:
+        ownership:
+          type: "string"
+          description: "Indicates the ownership of the account."
+          readOnly: true
+        name:
+          $ref: "#/components/schemas/Name"
+    CreditAcceleratorAccountIncome:
+      title: "CreditAcceleratorAccountIncome"
+      type: "object"
+      properties:
+        regularIncomeTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        otherIncomeTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        servicesIncomeTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        depositTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        retirementTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+    CreditAcceleratorBalanceOccurrenceWithTxn:
+      title: "CreditAcceleratorBalanceOccurrenceWithTxn"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorOccurence"
+        currency:
+          type: "string"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorTransaction"
+    YodleeError:
+      title: "YodleeError"
+      type: "object"
+      properties:
+        errorMessage:
+          type: "string"
+          description: "The descriptive message that explains the error scenario."
+          readOnly: true
+        errorCode:
+          type: "string"
+          description: "The error code follows the format YNNN. The error codes do not change. New error codes may be added as we introduce new features and enhance functionalities."
+          readOnly: true
+        referenceCode:
+          type: "string"
+          description: "Unique Yodlee identifier used to troubleshoot issues at Yodlee's end."
+          readOnly: true
+    Name:
+      title: "Name"
+      type: "object"
+      properties:
+        middle:
+          type: "string"
+          description: "Middle name."
+        last:
+          type: "string"
+          description: "Last name."
+        fullName:
+          type: "string"
+          description: "Full name."
+        first:
+          type: "string"
+          description: "First name."
+    CreditAcceleratorClassification:
+      title: "CreditAcceleratorClassification"
+      type: "object"
+      properties:
+        classificationTypes:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorClassificationType"
+        currency:
+          type: "string"
+    CreditAcceleratorStatementResponse:
+      title: "CreditAcceleratorStatementResponse"
+      type: "object"
+      properties:
+        configName:
+          type: "string"
+          description: "The config name using which the credit accelerator file generation was requested"
+          readOnly: true
+        reportId:
+          type: "integer"
+          description: "Unique identifier for the credit accelerator file"
+          format: "int64"
+          readOnly: true
+        statements:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorStatement"
+        submissionDate:
+          type: "string"
+          description: "Date on which the request to generate credit accelerator file was submitted"
+          readOnly: true
+        status:
+          type: "string"
+          description: "Generation status of the requested credit accelerator file requested"
+          readOnly: true
+          enum:
+          - "SUBMITTED"
+          - "IN_PROGRESS"
+          - "COMPLETED"
+          - "FAILED"
+    Identifier:
+      title: "Identifier"
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          description: "Type of Identifier"
+          readOnly: true
+          enum:
+          - "NIE"
+          - "DNI"
+          - "EIN"
+          - "BN"
+          - "AADHAR"
+          - "NIN"
+          - "NRIC"
+        value:
+          type: "string"
+          description: "Value of the identifier"
+          readOnly: true
+    CreditAcceleratorStatusResponse:
+      title: "CreditAcceleratorStatusResponse"
+      type: "object"
+      properties:
+        configName:
+          type: "string"
+          description: "The config name using which the credit accelerator file generation was requested"
+          readOnly: true
+        reportId:
+          type: "integer"
+          description: "Unique identifier for the credit accelerator file"
+          format: "int64"
+          readOnly: true
+        selectedAccounts:
+          type: "array"
+          description: "Accounts which were selected for credit accelerator file generation."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorSelectedAccount"
+        submissionDate:
+          type: "string"
+          description: "Date on which the request to generate credit accelerator file was submitted"
+          readOnly: true
+        originalReportId:
+          type: "integer"
+          description: "Report id of original report on which refresh is performed. This is not available when report is generated for the first time."
+          format: "int64"
+          readOnly: true
+        status:
+          type: "string"
+          description: "Generation status of the requested credit accelerator file requested"
+          readOnly: true
+          enum:
+          - "SUBMITTED"
+          - "IN_PROGRESS"
+          - "COMPLETED"
+          - "FAILED"
+    CreditAcceleratorDailyBalanceSummary:
+      title: "CreditAcceleratorDailyBalanceSummary"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorDailySummary"
+        currency:
+          type: "string"
+    LoanPayoffDetails:
+      title: "LoanPayoffDetails"
+      type: "object"
+      properties:
+        payByDate:
+          type: "string"
+          description: "The date by which the payoff amount should be paid.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+        payoffAmount:
+          $ref: "#/components/schemas/Money"
+        outstandingBalance:
+          $ref: "#/components/schemas/Money"
+    CreditAcceleratorTxnSummary:
+      title: "CreditAcceleratorTxnSummary"
+      type: "object"
+      properties:
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested."
+          readOnly: true
+        sum:
+          type: "number"
+          description: "Total amount for the time period."
+          format: "double"
+          readOnly: true
+    CreditAcceleratorClassificationType:
+      title: "CreditAcceleratorClassificationType"
+      type: "object"
+      properties:
+        total:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorClassificationValue"
+        classificationValues:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorClassificationValue"
+        classificationType:
+          type: "string"
+    UpdateConfigsNotificationEvent:
+      title: "UpdateConfigsNotificationEvent"
+      type: "object"
+      properties:
+        callbackUrl:
+          maxLength: 2147483647
+          minLength: 1
+          type: "string"
+          description: "URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul>"
+    CreditAcceleratorFile:
+      title: "CreditAcceleratorFile"
+      type: "object"
+      properties:
+        configName:
+          type: "string"
+          description: "The config name using which the credit accelerator file generation was requested"
+          readOnly: true
+        docContent:
+          type: "string"
+          description: "Contents of the document in Base64 format"
+          readOnly: true
+        data:
+          $ref: "#/components/schemas/CreditAcceleratorData"
+        reportConfig:
+          $ref: "#/components/schemas/CreditAcceleratorReportConfig"
+        selectedAccounts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorSelectedAccount"
+        submissionDate:
+          type: "string"
+          description: "Date on which the request to generate credit accelerator file was submitted"
+          readOnly: true
+        id:
+          type: "integer"
+          description: "Unique identifier for credit accelerator report."
+          format: "int64"
+          readOnly: true
+        user:
+          $ref: "#/components/schemas/CreditAcceleratorUser"
+        originalReportId:
+          type: "integer"
+          description: "Report id of original report on which refresh is performed. This is not available when report is generated for the first time."
+          format: "int64"
+          readOnly: true
+        status:
+          type: "string"
+          description: "Generation status of the requested credit accelerator file requested"
+          readOnly: true
+          enum:
+          - "SUBMITTED"
+          - "IN_PROGRESS"
+          - "COMPLETED"
+          - "FAILED"
+    CreditAcceleratorAccountAddress:
+      title: "CreditAcceleratorAccountAddress"
+      type: "object"
+      properties:
+        zip:
+          type: "string"
+          description: "Zip."
+        country:
+          type: "string"
+          description: "Country."
+        address3:
+          type: "string"
+          description: "Address Line 3."
+        address2:
+          type: "string"
+          description: "Address Line 2."
+        city:
+          type: "string"
+          description: "City."
+        sourceType:
+          type: "string"
+          description: "Address Source."
+          readOnly: true
+        address1:
+          type: "string"
+          description: "Address Line 1."
+        street:
+          type: "string"
+          description: "Street."
+          readOnly: true
+        fullAddress:
+          type: "string"
+          description: "Full Address."
+          readOnly: true
+        state:
+          type: "string"
+          description: "State."
+        type:
+          type: "string"
+          description: "Type of address."
+          readOnly: true
+          enum:
+          - "HOME"
+          - "BUSINESS"
+          - "POBOX"
+          - "RETAIL"
+          - "OFFICE"
+          - "SMALL_BUSINESS"
+          - "COMMUNICATION"
+          - "PERMANENT"
+          - "STATEMENT_ADDRESS"
+          - "PAYMENT"
+          - "PAYOFF"
+          - "UNKNOWN"
+    CreditAcceleratorBalanceSummary:
+      title: "CreditAcceleratorBalanceSummary"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorSummary"
+        currency:
+          type: "string"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorTransaction"
+    CreditAcceleratorCashFlow:
+      title: "CreditAcceleratorCashFlow"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorCashFlowAnalysis"
+        currency:
+          type: "string"
+    CreditAcceleratorCashFlowAnalysis:
+      title: "CreditAcceleratorCashFlowAnalysis"
+      type: "object"
+      properties:
+        cashInflowIncome:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as income."
+          format: "double"
+          readOnly: true
+        cashOutflowTransfers:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as transfers."
+          format: "double"
+          readOnly: true
+        cashOutflowTotalWithdrawalCountRatio:
+          type: "number"
+          description: "Ratio of Total Withdrawal count to total transactions count."
+          format: "double"
+          readOnly: true
+        cashOutflowWithdrawals:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as checks and withdrawals."
+          format: "double"
+          readOnly: true
+        cashOutflow:
+          type: "number"
+          description: "Sum of all cash outflow transactions."
+          format: "double"
+          readOnly: true
+        cashflowRatio:
+          type: "number"
+          description: "Cash inflow divided by cash outflow."
+          format: "double"
+          readOnly: true
+        cashOutflowExpenses:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as expenses."
+          format: "double"
+          readOnly: true
+        adjustedCashInflow:
+          type: "number"
+          description: "Sum of all cash inflow transactions (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashLeftover:
+          type: "number"
+          description: "Cash inflow subtracted by cash outflow."
+          format: "double"
+          readOnly: true
+        cashOutflowDebitServicing:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as repayments of debt."
+          format: "double"
+          readOnly: true
+        cashOutflowWithdrawalToExpenseCountRatio:
+          type: "number"
+          description: "Ratio of Cash withdrawal count to Expense transaction count."
+          format: "double"
+          readOnly: true
+        adjustedCashflowRatio:
+          type: "number"
+          description: "Cash inflow (excluding large amounts) divided by cash outflow (excluding large amounts)."
+          format: "double"
+          readOnly: true
+        cashInflowTransfers:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as transfers."
+          format: "double"
+          readOnly: true
+        cashInflowDepositCountRatio:
+          type: "number"
+          description: "Ratio of Total Deposit count to total transactions count."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflow:
+          type: "number"
+          description: "Sum of all cash outflow transactions (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashInflowDeposits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as deposits (excluding income)."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowTransfers:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as transfers (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowDebitServicing:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as repayments of debt (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashLeftover:
+          type: "number"
+          description: "Cash inflow (excluding large amounts) subtracted by cash outflow (excluding large amounts)."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowTransfers:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as transfers (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashOutflowOtherDebits:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as other debits."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowOtherDebits:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as other debits (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowWithdrawals:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as checks and withdrawals (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowOtherCredits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as other credits (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashInflow:
+          type: "number"
+          description: "Sum of all cash inflow transactions."
+          format: "double"
+          readOnly: true
+        cashInflowOtherCredits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as other credits."
+          format: "double"
+          readOnly: true
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested."
+          readOnly: true
+        adjustedCashInflowDeposits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as deposits (excluding income and large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowExpenses:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as expenses (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashOutflowCashWithdrawalCountRatio:
+          type: "number"
+          description: "Ratio of Cash withdrawal count  to total withdrawal count."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowIncome:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as income (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+    CreditAcceleratorClassificationValue:
+      title: "CreditAcceleratorClassificationValue"
+      type: "object"
+      properties:
+        amount:
+          type: "number"
+          format: "double"
+        percentage:
+          type: "number"
+          format: "double"
+        classificationValue:
+          type: "string"
+    Coordinates:
+      title: "Coordinates"
+      type: "object"
+      properties:
+        latitude:
+          type: "number"
+          description: "Latitude of the merchant<br><br><b>Applicable containers</b>: bank,creditCard,loan<br>"
+          format: "double"
+        longitude:
+          type: "number"
+          description: "Longitude of the merchant<br><br><b>Applicable containers</b>: bank,creditCard,loan<br>"
+          format: "double"
+    CoverageAmount:
+      title: "CoverageAmount"
+      type: "object"
+      properties:
+        cover:
+          $ref: "#/components/schemas/Money"
+        unitType:
+          type: "string"
+          description: "The type of coverage unit indicates if the coverage is for an individual or a family.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "PER_FAMILY"
+          - "PER_MEMBER"
+        type:
+          type: "string"
+          description: "The type of coverage provided to an individual or an entity.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "DEDUCTIBLE"
+          - "OUT_OF_POCKET"
+          - "ANNUAL_BENEFIT"
+          - "MAX_BENEFIT"
+          - "COVERAGE_AMOUNT"
+          - "MONTHLY_BENEFIT"
+          - "OTHER"
+        limitType:
+          type: "string"
+          description: "The type of coverage limit indicates if the coverage is in-network or out-of-network.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "IN_NETWORK"
+          - "OUT_NETWORK"
+        met:
+          $ref: "#/components/schemas/Money"
+    CreditAcceleratorBankTransferCode:
+      title: "CreditAcceleratorBankTransferCode"
+      type: "object"
+      properties:
+        sourceType:
+          type: "string"
+          readOnly: true
+        id:
+          type: "string"
+          description: "The FI's branch identification number.Additional Details: The routing number of the bank account in the United States. For non-United States accounts, it is the IFSC code (India), BSB number (Australia), and sort code (United Kingdom). <br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: bank, investment<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>POST verification</li></ul>"
+        type:
+          type: "string"
+          description: "The bank transfer code type varies depending on the region of the account origination. <br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: bank, investment<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>POST verification</li></ul><b>Applicable Values</b><br>"
+          enum:
+          - "BSB"
+          - "IFSC"
+          - "ROUTING_NUMBER"
+          - "SORT_CODE"
+    RewardBalance:
+      title: "RewardBalance"
+      type: "object"
+      properties:
+        expiryDate:
+          type: "string"
+          description: "The date on which the balance expires.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        balanceToReward:
+          type: "string"
+          description: "The balance required to qualify for a reward such as retaining membership, business reward, etc.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        balanceType:
+          type: "string"
+          description: "The type of reward balance.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "EXPIRING_BALANCE"
+          - "BALANCE_TO_LEVEL"
+          - "BALANCE_TO_REWARD"
+          - "BALANCE"
+          - "TOTAL_BALANCE"
+        balance:
+          type: "number"
+          description: "The actual reward balance.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "double"
+          readOnly: true
+        description:
+          type: "string"
+          description: "The description for the reward balance as available at provider source.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        balanceToLevel:
+          type: "string"
+          description: "The balance required to reach a reward level.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        units:
+          type: "string"
+          description: "Unit of reward balance - miles, points, segments, dollars, credits.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+    CreditAcceleratorAccount:
+      title: "CreditAcceleratorAccount"
+      type: "object"
+      properties:
+        availableCash:
+          $ref: "#/components/schemas/Money"
+        includeInNetWorth:
+          type: "boolean"
+          description: "Used to determine  whether an account to be considered in the networth calculation.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank,creditCard,loan,investment,insurance,realEstate,otherAssets,otherLiabilities<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        moneyMarketBalance:
+          $ref: "#/components/schemas/Money"
+        enrollmentDate:
+          type: "string"
+          description: "Date on which the user is enrolled on the rewards program.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        estimatedDate:
+          type: "string"
+          description: "The date on which the home value was estimated.<br><br><b>Aggregated / Manual</b>: Manual<br><b>Applicable containers</b>: realEstate<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        memo:
+          type: "string"
+          description: "The additional description or notes given by the user.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        guarantor:
+          type: "string"
+          description: "A nonprofit or state organization that works with lender, servicer, school, and the Department of Education to help successfully repay Federal Family Education Loan Program (FFELP) loans. If FFELP student loans default, the guarantor takes ownership of them.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        interestPaidLastYear:
+          $ref: "#/components/schemas/Money"
+        lastUpdated:
+          type: "string"
+          description: "The date time the account information was last retrieved from the provider site and updated in the Yodlee system.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        balance:
+          $ref: "#/components/schemas/Money"
+        homeInsuranceType:
+          type: "string"
+          description: "Type of home insurance, like -<ul><li>HOME_OWNER</li><li>RENTAL</li><li>RENTER</li><li>etc..</li></ul><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "HOME_OWNER"
+          - "RENTAL"
+          - "RENTER"
+          - "UNKNOWN"
+          - "OTHER"
+        id:
+          type: "integer"
+          description: "The primary key of the account resource and the unique identifier for the account.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts </li><li>GET accounts/{accountId}</li><li>GET investmentOptions</li><li>GET accounts/historicalBalances</li><li>POST accounts</li><li>GET dataExtracts/userData</li></ul>"
+          format: "int64"
+          readOnly: true
+        cash:
+          $ref: "#/components/schemas/Money"
+        totalCreditLine:
+          $ref: "#/components/schemas/Money"
+        providerName:
+          type: "string"
+          description: "Service provider or institution name where the account originates. This belongs to the provider resource.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        valuationType:
+          type: "string"
+          description: "The valuation type indicates whether the home value is calculated either manually or by Yodlee Partners.<br><br><b>Aggregated / Manual</b>: Manual<br><b>Applicable containers</b>: realEstate<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "SYSTEM"
+          - "MANUAL"
+        marginBalance:
+          $ref: "#/components/schemas/Money"
+        apr:
+          type: "number"
+          description: "The annual percentage rate (APR) is the yearly rate of interest on the credit card account.<br><b>Additional Details:</b> The yearly percentage rate charged when a balance is held on a credit card. This rate of interest is applied every month on the outstanding credit card balance.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "double"
+          readOnly: true
+        availableCredit:
+          $ref: "#/components/schemas/Money"
+        currentBalance:
+          $ref: "#/components/schemas/Money"
+        isManual:
+          type: "boolean"
+          description: "Indicates if an account is aggregated from a site or it is a manual account i.e. account information manually provided by the user.<br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        profile:
+          $ref: "#/components/schemas/CreditAcceleratorAccountProfile"
+        escrowBalance:
+          $ref: "#/components/schemas/Money"
+        nextLevel:
+          type: "string"
+          description: "The eligible next level of the rewards program.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        classification:
+          type: "string"
+          description: "The classification of the account such as personal, corporate, etc.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, creditCard, investment, reward, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "OTHER"
+          - "PERSONAL"
+          - "CORPORATE"
+          - "SMALL_BUSINESS"
+          - "TRUST"
+          - "ADD_ON_CARD"
+          - "VIRTUAL_CARD"
+        loanPayoffAmount:
+          $ref: "#/components/schemas/Money"
+        interestRateType:
+          type: "string"
+          description: "The type of the interest rate, for example, fixed or variable.<br><b>Applicable containers</b>: loan<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "FIXED"
+          - "VARIABLE"
+          - "UNKNOWN"
+          - "OTHER"
+        loanPayByDate:
+          type: "string"
+          description: "The date by which the payoff amount should be paid.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        faceAmount:
+          $ref: "#/components/schemas/Money"
+        policyFromDate:
+          type: "string"
+          description: "The date the insurance policy began.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        premiumPaymentTerm:
+          type: "string"
+          description: "The number of years for which premium payments have to be made in a policy.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        policyTerm:
+          type: "string"
+          description: "The duration for which the policy is valid or in effect. For example, one year, five years, etc.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        repaymentPlanType:
+          type: "string"
+          description: "The type of repayment plan that the borrower prefers to repay the loan. <br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "STANDARD"
+          - "GRADUATED"
+          - "EXTENDED"
+          - "INCOME_BASED"
+          - "INCOME_CONTINGENT"
+          - "INCOME_SENSITIVE"
+          - "PAY_AS_YOU_EARN"
+          - "REVISED_PAY_AS_YOU_EARN"
+        aggregatedAccountType:
+          type: "string"
+          description: "The type of account that is aggregated."
+          readOnly: true
+        availableBalance:
+          $ref: "#/components/schemas/Money"
+        reconciliable:
+          type: "boolean"
+        accountStatus:
+          type: "string"
+          description: "The status of the account that is updated by the consumer through an application or an API. Valid Values: AccountStatus<br><b>Additional Details:</b><br><b>ACTIVE:</b> All the added manual and aggregated accounts status will be made \"ACTIVE\" by default. <br><b>TO_BE_CLOSED:</b> If the aggregated accounts are not found or closed in the data provider site, Yodlee system marks the status as TO_BE_CLOSED<br><b>INACTIVE:</b> Users can update the status as INACTIVE to stop updating and to stop considering the account in other services<br><b>CLOSED:</b> Users can update the status as CLOSED, if the account is closed with the provider. <br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "ACTIVE"
+          - "INACTIVE"
+          - "TO_BE_CLOSED"
+          - "CLOSED"
+          - "DELETED"
+        lifeInsuranceType:
+          type: "string"
+          description: "Type of life insurance.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "OTHER"
+          - "TERM_LIFE_INSURANCE"
+          - "UNIVERSAL_LIFE_INSURANCE"
+          - "WHOLE_LIFE_INSURANCE"
+          - "VARIABLE_LIFE_INSURANCE"
+          - "ULIP"
+          - "ENDOWMENT"
+        fullAccountNumber:
+          type: "string"
+          description: "Full account number of the account that is included only when include = fullAccountNumber is provided in the request. For student loan account the account number that will be used for ACH or fund transfer<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: bank, creditCard, investment, insurance, loan, reward, otherAssets, otherLiabilities <br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><b> Note : </b> fullAccountNumber is deprecated and is replaced with fullAccountNumberList in include parameter and response.</ul>"
+          readOnly: true
+        premium:
+          $ref: "#/components/schemas/Money"
+        aggregationSource:
+          type: "string"
+          description: "The source through which the account(s) are added in the system.<br><b>Valid Values</b>: SYSTEM, USER<br><b>Applicable containers</b>: All Containers<br><b>Aggregated / Manual</b>: Both <br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "SYSTEM"
+          - "USER"
+        overDraftLimit:
+          $ref: "#/components/schemas/Money"
+        nickname:
+          type: "string"
+          description: "The nickname of the account as provided by the consumer to identify an account. The account nickname can be used instead of the account name.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        term:
+          type: "string"
+          description: "The tenure for which the CD account is valid  or in case of loan, the number of years/months over which the loan amount  has to be repaid. <br><b>Additional Details:</b><br>  Bank: The Term field is only applicable for the account type CD.Loan: The period for which the loan agreement is in force. The period, before or at the end of which, the loan should either be repaid or renegotiated for another term.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        interestRate:
+          type: "number"
+          description: "<br><b>Bank:</b> The interest rate offered by a FI to its depositors on a bank account.<br><b>Loan:</b> Interest rate applied on the loan.<br><b>Additional Details:</b><br><b>Note:</b> The Interest Rate field is only applicable for the following account types: savings, checking, money market, and certificate of deposit.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "double"
+          readOnly: true
+        deathBenefit:
+          $ref: "#/components/schemas/Money"
+        address:
+          $ref: "#/components/schemas/CreditAcceleratorAccountAddress"
+        cashValue:
+          $ref: "#/components/schemas/Money"
+        holder:
+          type: "array"
+          description: "Holder details of the account.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAccountHolder"
+        401kLoan:
+          $ref: "#/components/schemas/Money"
+        homeValue:
+          $ref: "#/components/schemas/Money"
+        accountNumber:
+          type: "string"
+          description: "The account number as it appears on the site. (The POST accounts service response return this field as number)<br><b>Additional Details</b>:<b> Bank/ Loan/ Insurance/ Investment</b>:<br> The account number for the bank account as it appears at the site.<br><b>Credit Card</b>: The account number of the card account as it appears at the site,<br>i.e., the card number.The account number can be full or partial based on how it is displayed in the account summary page of the site.In most cases, the site does not display the full account number in the account summary page and additional navigation is required to aggregate it.<br><b>Applicable containers</b>: All Containers<br><b>Aggregated / Manual</b>: Both <br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>POST accounts</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        createdDate:
+          type: "string"
+          description: "The date on which the account is created in the Yodlee system.<br><b>Additional Details:</b> It is the date when the user links or aggregates the account(s) that are held with the provider to the Yodlee system.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        interestPaidYTD:
+          $ref: "#/components/schemas/Money"
+        providerAccountId:
+          type: "integer"
+          description: "The primary key of the provider account resource.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "int64"
+          readOnly: true
+        collateral:
+          type: "string"
+          description: "Property or possession offered to support a loan that can be seized on a default.<br><b>Applicable containers</b>: loan<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        dataset:
+          type: "array"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/AccountDataset"
+        runningBalance:
+          $ref: "#/components/schemas/Money"
+        isReconciliable:
+          type: "boolean"
+          readOnly: true
+        sourceId:
+          type: "string"
+          description: "A unique ID that the provider site has assigned to the account. The source ID is only available for the HELD accounts.<br><br><b>Applicable containers</b>: bank, creditCard, investment, insurance, loan, reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        dueDate:
+          type: "string"
+          description: "The date on which the due amount has to be paid. <br><b>Additional Details:</b><br><b>Credit Card:</b> The monthly date by when the minimum payment is due to be paid on the credit card account. <br><b>Loan:</b> The date on or before which the due amount should be paid.<br><b>Note:</b> The due date at the account-level can differ from the due date field at the statement-level, as the information in the aggregated card account data provides an up-to-date information to the consumer.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        frequency:
+          type: "string"
+          description: "The frequency of the billing cycle of the account in case of card. The frequency in which premiums are paid in an insurance policy such as monthly, quarterly, and annually. The frequency in which due amounts are paid in a loan  account.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: creditCard, insurance, loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "DAILY"
+          - "ONE_TIME"
+          - "WEEKLY"
+          - "EVERY_2_WEEKS"
+          - "SEMI_MONTHLY"
+          - "MONTHLY"
+          - "QUARTERLY"
+          - "SEMI_ANNUALLY"
+          - "ANNUALLY"
+          - "EVERY_2_MONTHS"
+          - "EBILL"
+          - "FIRST_DAY_MONTHLY"
+          - "LAST_DAY_MONTHLY"
+          - "EVERY_4_WEEKS"
+          - "UNKNOWN"
+          - "OTHER"
+        maturityAmount:
+          $ref: "#/components/schemas/Money"
+        associatedProviderAccountId:
+          type: "array"
+          description: "The providerAccountIds that share the account with the primary providerAccountId that was created when the user had added the account for the first time.<br><b>Additional Details</b>: This attribute is returned in the response only if the account deduplication feature is enabled and the same account is mapped to more than one provider account IDs indicating the account is owned by more than one user, for example, joint accounts.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: All Containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+          items:
+            type: "integer"
+            format: "int64"
+        isAsset:
+          type: "boolean"
+          description: "The account to be considered as an asset or liability.<br><b>Applicable containers</b>: All Containers<br><b>Aggregated / Manual</b>: Both <br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        principalBalance:
+          $ref: "#/components/schemas/Money"
+        totalCashLimit:
+          $ref: "#/components/schemas/Money"
+        maturityDate:
+          type: "string"
+          description: "The date when a certificate of deposit (CD/FD) matures or the final payment date of a loan at which point the principal amount (including pending interest) is due to be paid.<br><b>Additional Details:</b> The date when a certificate of deposit (CD) matures, i.e., the money in the CD can be withdrawn without paying an early withdrawal penalty.The final payment date of a loan, i.e., the principal amount (including pending interest) is due to be paid.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        minimumAmountDue:
+          $ref: "#/components/schemas/Money"
+        annualPercentageYield:
+          type: "number"
+          description: "Annual percentage yield (APY) is a normalized representation of an interest rate, based on a compounding period of one year. APY generally refers to the rate paid to a depositor by a financial institution on an account.<br><b>Applicable containers</b>: bank<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "double"
+          readOnly: true
+        accountType:
+          type: "string"
+          description: "The type of account that is aggregated, i.e., savings, checking, credit card, charge, HELOC, etc. The account type is derived based on the attributes of the account. <br><b>Valid Values:</b><br><b>Aggregated Account Type</b><br><b>bank</b><ul><li>CHECKING</li><li>SAVINGS</li><li>CD</li><li>PPF</li><li>RECURRING_DEPOSIT</li><li>FSA</li><li>MONEY_MARKET</li><li>IRA</li><li>PREPAID</li></ul><b>creditCard</b><ul><li>OTHER</li><li>CREDIT</li><li>STORE</li><li>CHARGE</li><li>OTHER</li></ul><b>investment (SN 1.0)</b><ul><li>BROKERAGE_MARGIN</li><li>HSA</li><li>IRA</li><li>BROKERAGE_CASH</li><li>401K</li><li>403B</li><li>TRUST</li><li>ANNUITY</li><li>SIMPLE</li><li>CUSTODIAL</li><li>BROKERAGE_CASH_OPTION</li><li>BROKERAGE_MARGIN_OPTION</li><li>INDIVIDUAL</li><li>CORPORATE</li><li>JTTIC</li><li>JTWROS</li><li>COMMUNITY_PROPERTY</li><li>JOINT_BY_ENTIRETY</li><li>CONSERVATORSHIP</li><li>ROTH</li><li>ROTH_CONVERSION</li><li>ROLLOVER</li><li>EDUCATIONAL</li><li>529_PLAN</li><li>457_DEFERRED_COMPENSATION</li><li>401A</li><li>PSP</li><li>MPP</li><li>STOCK_BASKET</li><li>LIVING_TRUST</li><li>REVOCABLE_TRUST</li><li>IRREVOCABLE_TRUST</li><li>CHARITABLE_REMAINDER</li><li>CHARITABLE_LEAD</li><li>CHARITABLE_GIFT_ACCOUNT</li><li>SEP</li><li>UTMA</li><li>UGMA</li><li>ESOPP</li><li>ADMINISTRATOR</li><li>EXECUTOR</li><li>PARTNERSHIP</li><li>SOLE_PROPRIETORSHIP</li><li>CHURCH</li><li>INVESTMENT_CLUB</li><li>RESTRICTED_STOCK_AWARD</li><li>CMA</li><li>EMPLOYEE_STOCK_PURCHASE_PLAN</li><li>PERFORMANCE_PLAN</li><li>BROKERAGE_LINK_ACCOUNT</li><li>MONEY_MARKET</li><li>SUPER_ANNUATION</li><li>REGISTERED_RETIREMENT_SAVINGS_PLAN</li><li>SPOUSAL_RETIREMENT_SAVINGS_PLAN</li><li>DEFERRED_PROFIT_SHARING_PLAN</li><li>NON_REGISTERED_SAVINGS_PLAN</li><li>REGISTERED_EDUCATION_SAVINGS_PLAN</li><li>GROUP_RETIREMENT_SAVINGS_PLAN</li><li>LOCKED_IN_RETIREMENT_SAVINGS_PLAN</li><li>RESTRICTED_LOCKED_IN_SAVINGS_PLAN</li><li>LOCKED_IN_RETIREMENT_ACCOUNT</li><li>REGISTERED_PENSION_PLAN</li><li>TAX_FREE_SAVINGS_ACCOUNT</li><li>LIFE_INCOME_FUND</li><li>REGISTERED_RETIREMENT_INCOME_FUND</li><li>SPOUSAL_RETIREMENT_INCOME_FUND</li><li>LOCKED_IN_REGISTERED_INVESTMENT_FUND</li><li>PRESCRIBED_REGISTERED_RETIREMENT_INCOME_FUND</li><li>GUARANTEED_INVESTMENT_CERTIFICATES</li><li>REGISTERED_DISABILITY_SAVINGS_PLAN</li><li>DIGITAL_WALLET</li><li>OTHER</li></ul><b>investment (SN 2.0)</b><ul><li>BROKERAGE_CASH</li><li>BROKERAGE_MARGIN</li><li>INDIVIDUAL_RETIREMENT_ACCOUNT_IRA</li><li>EMPLOYEE_RETIREMENT_ACCOUNT_401K</li><li>EMPLOYEE_RETIREMENT_SAVINGS_PLAN_403B</li><li>TRUST</li><li>ANNUITY</li><li>SIMPLE_IRA</li><li>CUSTODIAL_ACCOUNT</li><li>BROKERAGE_CASH_OPTION</li><li>BROKERAGE_MARGIN_OPTION</li><li>INDIVIDUAL</li><li>CORPORATE_INVESTMENT_ACCOUNT</li><li>JOINT_TENANTS_TENANCY_IN_COMMON_JTIC</li><li>JOINT_TENANTS_WITH_RIGHTS_OF_SURVIVORSHIP_JTWROS</li><li>JOINT_TENANTS_COMMUNITY_PROPERTY</li><li>JOINT_TENANTS_TENANTS_BY_ENTIRETY</li><li>CONSERVATOR</li><li>ROTH_IRA</li><li>ROTH_CONVERSION</li><li>ROLLOVER_IRA</li><li>EDUCATIONAL</li><li>EDUCATIONAL_SAVINGS_PLAN_529</li><li>DEFERRED_COMPENSATION_PLAN_457</li><li>MONEY_PURCHASE_RETIREMENT_PLAN_401A</li><li>PROFIT_SHARING_PLAN</li><li>MONEY_PURCHASE_PLAN</li><li>STOCK_BASKET_ACCOUNT</li><li>LIVING_TRUST</li><li>REVOCABLE_TRUST</li><li>IRREVOCABLE_TRUST</li><li>CHARITABLE_REMAINDER_TRUST</li><li>CHARITABLE_LEAD_TRUST</li><li>CHARITABLE_GIFT_ACCOUNT</li><li>SEP_IRA</li><li>UNIFORM_TRANSFER_TO_MINORS_ACT_UTMA</li><li>UNIFORM_GIFT_TO_MINORS_ACT_UGMA</li><li>EMPLOYEE_STOCK_OWNERSHIP_PLAN_ESOP</li><li>ADMINISTRATOR</li><li>EXECUTOR</li><li>PARTNERSHIP</li><li>PROPRIETORSHIP</li><li>CHURCH_ACCOUNT</li><li>INVESTMENT_CLUB</li><li>RESTRICTED_STOCK_AWARD</li><li>CASH_MANAGEMENT_ACCOUNT</li><li>EMPLOYEE_STOCK_PURCHASE_PLAN_ESPP</li><li>PERFORMANCE_PLAN</li><li>BROKERAGE_LINK_ACCOUNT</li><li>MONEY_MARKET_ACCOUNT</li><li>SUPERANNUATION</li><li>REGISTERED_RETIREMENT_SAVINGS_PLAN_RRSP</li><li>SPOUSAL_RETIREMENT_SAVINGS_PLAN_SRSP</li><li>DEFERRED_PROFIT_SHARING_PLAN_DPSP</li><li>NON_REGISTERED_SAVINGS_PLAN_NRSP</li><li>REGISTERED_EDUCATION_SAVINGS_PLAN_RESP</li><li>GROUP_RETIREMENT_SAVINGS_PLAN_GRSP</li><li>LOCKED_IN_RETIREMENT_SAVINGS_PLAN_LRSP</li><li>RESTRICTED_LOCKED_IN_SAVINGS_PLAN_RLSP</li><li>LOCKED_IN_RETIREMENT_ACCOUNT_LIRA</li><li>REGISTERED_PENSION_PLAN_RPP</li><li>TAX_FREE_SAVINGS_ACCOUNT_TFSA</li><li>LIFE_INCOME_FUND_LIF</li><li>REGISTERED_RETIREMENT_INCOME_FUND_RIF</li><li>SPOUSAL_RETIREMENT_INCOME_FUND_SRIF</li><li>LOCKED_IN_REGISTERED_INVESTMENT_FUND_LRIF</li><li>PRESCRIBED_REGISTERED_RETIREMENT_INCOME_FUND_PRIF</li><li>GUARANTEED_INVESTMENT_CERTIFICATES_GIC</li><li>REGISTERED_DISABILITY_SAVINGS_PLAN_RDSP</li><li>DEFINED_CONTRIBUTION_PLAN</li><li>DEFINED_BENEFIT_PLAN</li><li>EMPLOYEE_STOCK_OPTION_PLAN</li><li>NONQUALIFIED_DEFERRED_COMPENSATION_PLAN_409A</li><li>KEOGH_PLAN</li><li>EMPLOYEE_RETIREMENT_ACCOUNT_ROTH_401K</li><li>DEFERRED_CONTINGENT_CAPITAL_PLAN_DCCP</li><li>EMPLOYEE_BENEFIT_PLAN</li><li>EMPLOYEE_SAVINGS_PLAN</li><li>HEALTH_SAVINGS_ACCOUNT_HSA</li><li>COVERDELL_EDUCATION_SAVINGS_ACCOUNT_ESA</li><li>TESTAMENTARY_TRUST</li><li>ESTATE</li><li>GRANTOR_RETAINED_ANNUITY_TRUST_GRAT</li><li>ADVISORY_ACCOUNT</li><li>NON_PROFIT_ORGANIZATION_501C</li><li>HEALTH_REIMBURSEMENT_ARRANGEMENT_HRA</li><li>INDIVIDUAL_SAVINGS_ACCOUNT_ISA</li><li>CASH_ISA</li><li>STOCKS_AND_SHARES_ISA</li><li>INNOVATIVE_FINANCE_ISA</li><li>JUNIOR_ISA</li><li>EMPLOYEES_PROVIDENT_FUND_ORGANIZATION_EPFO</li><li>PUBLIC_PROVIDENT_FUND_PPF</li><li>EMPLOYEES_PENSION_SCHEME_EPS</li><li>NATIONAL_PENSION_SYSTEM_NPS</li><li>INDEXED_ANNUITY</li><li>ANNUITIZED_ANNUITY</li><li>VARIABLE_ANNUITY</li><li>ROTH_403B</li><li>SPOUSAL_IRA</li><li>SPOUSAL_ROTH_IRA</li><li>SARSEP_IRA</li><li>SUBSTANTIALLY_EQUAL_PERIODIC_PAYMENTS_SEPP</li><li>OFFSHORE_TRUST</li><li>IRREVOCABLE_LIFE_INSURANCE_TRUST</li><li>INTERNATIONAL_TRUST</li><li>LIFE_INTEREST_TRUST</li><li>EMPLOYEE_BENEFIT_TRUST</li><li>PRECIOUS_METAL_ACCOUNT</li><li>INVESTMENT_LOAN_ACCOUNT</li><li>GRANTOR_RETAINED_INCOME_TRUST</li><li>PENSION_PLAN</li><li>DIGITAL_WALLET</li><li>OTHER</li></ul><b>loan</b><ul><li>MORTGAGE</li><li>INSTALLMENT_LOAN</li><li>PERSONAL_LOAN</li><li>HOME_EQUITY_LINE_OF_CREDIT</li><li>LINE_OF_CREDIT</li><li>AUTO_LOAN</li><li>STUDENT_LOAN</li><li>HOME_LOAN</li></ul><b>insurance</b><ul><li>AUTO_INSURANCE</li><li>HEALTH_INSURANCE</li><li>HOME_INSURANCE</li><li>LIFE_INSURANCE</li><li>ANNUITY</li><li>TRAVEL_INSURANCE</li><li>INSURANCE</li></ul><b>realEstate</b><ul> <li>REAL_ESTATE</li></ul><b>reward</b><ul><li>REWARD_POINTS</li></ul><b>Manual Account Type</b><br><b>bank</b><ul><li>CHECKING</li><li>SAVINGS</li><li>CD</li><li>PREPAID</li></ul><b>credit</b><ul>  <li>CREDIT</li></ul><b>loan</b><ul>  <li>PERSONAL_LOAN</li><li>HOME_LOAN</li></ul><b>insurance</b><ul><li>INSURANCE</li><li>ANNUITY</li></ul><b>investment</b><ul><li>BROKERAGE_CASH</li></ul><br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        originationDate:
+          type: "string"
+          description: "The date on which the loan is disbursed.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        totalVestedBalance:
+          $ref: "#/components/schemas/Money"
+        rewardBalance:
+          type: "array"
+          description: "Information of different reward balances associated with the account.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/RewardBalance"
+        sourceAccountStatus:
+          type: "string"
+          description: "Indicates the status of the loan account. <br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "IN_REPAYMENT"
+          - "DEFAULTED"
+          - "IN_SCHOOL"
+          - "IN_GRACE_PERIOD"
+          - "DELINQUENCY"
+          - "DEFERMENT"
+          - "FORBEARANCE"
+        linkedAccountIds:
+          type: "array"
+          description: "List of Loan accountId(s) to which the real-estate account is linked<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: realEstate<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+          items:
+            type: "integer"
+            format: "int64"
+        derivedApr:
+          type: "number"
+          description: "Derived APR will be an estimated purchase APR based on consumers credit card transactions and credit card purchase.<br><b>Aggregated / Manual / Derived</b>: Derived<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "double"
+          readOnly: true
+        policyEffectiveDate:
+          type: "string"
+          description: "The date on which the insurance policy coverage commences.<br><b>Applicable containers</b>: insurance<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        totalUnvestedBalance:
+          $ref: "#/components/schemas/Money"
+        annuityBalance:
+          $ref: "#/components/schemas/Money"
+        accountName:
+          type: "string"
+          description: "The account name as it appears at the site.<br>(The POST accounts service response return this field as name)<br><b>Applicable containers</b>: All Containers<br><b>Aggregated / Manual</b>: Both <br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        totalCreditLimit:
+          $ref: "#/components/schemas/Money"
+        policyStatus:
+          type: "string"
+          description: "The status of the policy.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "ACTIVE"
+          - "IN_ACTIVE"
+          - "OTHER"
+        shortBalance:
+          $ref: "#/components/schemas/Money"
+        lender:
+          type: "string"
+          description: "The financial institution that provides the loan.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        lastEmployeeContributionAmount:
+          $ref: "#/components/schemas/Money"
+        providerId:
+          type: "string"
+          description: "Identifier of the provider site. The primary key of provider resource. <br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        lastPaymentDate:
+          type: "string"
+          description: "The date on which the payment for the previous or current billing cycle is done.<br><b>Additional Details:</b> If the payment is already done for the current billing cycle, then the field indicates the payment date of the current billing cycle. If payment is yet to be done for the current billing cycle, then the field indicates the date on which the payment was made for any of the previous billing cycles. The last payment date at the account-level can differ from the last payment date at the statement-level, as the information in the aggregated card account data provides an up-to-date information to the consumer.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        primaryRewardUnit:
+          type: "string"
+          description: "Primary reward unit for this reward program. E.g. miles, points, etc.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        lastPaymentAmount:
+          $ref: "#/components/schemas/Money"
+        remainingBalance:
+          $ref: "#/components/schemas/Money"
+        userClassification:
+          type: "string"
+          description: "<b>Applicable containers</b>: reward, bank, creditCard, investment, loan, insurance, realEstate, otherLiabilities<br><b>Endpoints</b>:<ul><li>GET accounts </li><li>GET accounts/{accountId}</li><li>POST accounts</ul><li>GET dataExtracts/userData</li><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "BUSINESS"
+          - "PERSONAL"
+        bankTransferCode:
+          type: "array"
+          description: "Bank and branch identification information.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, investment, loan<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorBankTransferCode"
+        expirationDate:
+          type: "string"
+          description: "The date on which the insurance policy expires or matures.<br><b>Additional Details:</b> The due date at the account-level can differ from the due date field at the statement-level, as the information in the aggregated card account data provides an up-to-date information to the consumer.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        coverage:
+          type: "array"
+          description: "The coverage-related details of the account.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/Coverage"
+        cashApr:
+          type: "number"
+          description: "Annual percentage rate applied to cash withdrawals on the card.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          format: "double"
+        autoRefresh:
+          $ref: "#/components/schemas/AutoRefresh"
+        oauthMigrationStatus:
+          type: "string"
+          description: "Indicates the migration status of the account from screen-scraping provider to the Open Banking provider. <br><br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+          enum:
+          - "IN_PROGRESS"
+          - "TO_BE_MIGRATED"
+          - "COMPLETED"
+          - "MIGRATED"
+        displayedName:
+          type: "string"
+          description: "The name or identification of the account owner, as it appears at the FI site. <br><b>Note:</b> The account holder name can be full or partial based on how it is displayed in the account summary page of the FI site. In most cases, the FI site does not display the full account holder name in the account summary page.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, creditCard, investment, insurance, loan, reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        fullAccountNumberList:
+          $ref: "#/components/schemas/FullAccountNumberList"
+        amountDue:
+          $ref: "#/components/schemas/Money"
+        currentLevel:
+          type: "string"
+          description: "Current level of the reward program the user is associated with. E.g. Silver, Jade etc.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        originalLoanAmount:
+          $ref: "#/components/schemas/Money"
+        policyToDate:
+          type: "string"
+          description: "The date to which the policy exists.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        loanPayoffDetails:
+          $ref: "#/components/schemas/LoanPayoffDetails"
+        paymentProfile:
+          $ref: "#/components/schemas/CreditAcceleratorPaymentProfile"
+        CONTAINER:
+          type: "string"
+          description: "The type of service. E.g., Bank, Credit Card, Investment, Insurance, etc.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "bank"
+          - "creditCard"
+          - "investment"
+          - "insurance"
+          - "loan"
+          - "reward"
+          - "bill"
+          - "realEstate"
+          - "otherAssets"
+          - "otherLiabilities"
+        lastEmployeeContributionDate:
+          type: "string"
+          description: "The date on which the last employee contribution was made to the 401k account.<br><b>Note:</b> The last employee contribution date field is derived from the transaction data and not aggregated from the FI site. The field is only applicable to the 401k account type.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>"
+          readOnly: true
+        lastPayment:
+          $ref: "#/components/schemas/Money"
+        recurringPayment:
+          $ref: "#/components/schemas/Money"
+    FullAccountNumberList:
+      title: "FullAccountNumberList"
+      type: "object"
+      properties:
+        paymentAccountNumber:
+          type: "string"
+          description: "Payment Account Number of given account.<br><br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+        unmaskedAccountNumber:
+          type: "string"
+          description: "Unmasked account number of given account.<br><br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+    PaymentIdentifier:
+      title: "PaymentIdentifier"
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          description: "Type of Identifier"
+          readOnly: true
+          enum:
+          - "REFERENCE_NUMBER"
+          - "PLATFORM_CODE"
+        value:
+          type: "string"
+          description: "Value of the identifier"
+          readOnly: true
+    CreditAcceleratorAllAccountIncome:
+      title: "CreditAcceleratorAllAccountIncome"
+      type: "object"
+      properties:
+        regularIncomeTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of salary/regular income transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        otherIncomeTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of other income transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        servicesIncomeTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of sales/services income transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        totalIncomeTxnSummary:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        depositTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of deposit income transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        retirementTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of investment/retirement income transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+    CreditAcceleratorBalanceAnalysis:
+      title: "CreditAcceleratorBalanceAnalysis"
+      type: "object"
+      properties:
+        daysAboveAverage:
+          type: "number"
+          description: "Number of Daily Balances that are above the average for the time period."
+          format: "double"
+          readOnly: true
+        balanceStandardDeviation:
+          type: "number"
+          description: "Standard Deviation of Daily Balance for the time period."
+          format: "double"
+          readOnly: true
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested"
+          readOnly: true
+        daysBelowAverage:
+          type: "number"
+          description: "Number of Daily Balances that are below the average for the time period."
+          format: "double"
+          readOnly: true
+    CreditAcceleratorAccountSummary:
+      title: "CreditAcceleratorAccountSummary"
+      type: "object"
+      properties:
+        accountAnalysis:
+          $ref: "#/components/schemas/CreditAcceleratorAccountAnalysis"
+        accountVerification:
+          $ref: "#/components/schemas/CreditAcceleratorAccountVerification"
+        details:
+          $ref: "#/components/schemas/CreditAcceleratorAccount"
+        holdings:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Holding"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorTransaction"
+    CreditAcceleratorAllAccountCashFlow:
+      title: "CreditAcceleratorAllAccountCashFlow"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountCashFlowAnalysis"
+        currency:
+          type: "string"
+    CreditAcceleratorAccountVerification:
+      title: "CreditAcceleratorAccountVerification"
+      type: "object"
+      properties:
+        reason:
+          type: "string"
+          description: "Additional status for account verification failure."
+          readOnly: true
+        fullAccountNumber:
+          type: "string"
+          description: "Full account number of the account. For student loan account the account number that will be used for ACH or fund transfer.<br><b>Applicable containers</b>: bank, investment, loan"
+          readOnly: true
+        balance:
+          $ref: "#/components/schemas/Money"
+        verificationStatus:
+          type: "string"
+          description: "The status of the account verification.<br><b>Applicable Values:</b><br> * SUCCESS: <br><b>Description: </b>The consumer''s account verification is successful.<br> * FAILED: <br><b>Description: </b>The consumer''s account verification failed."
+          readOnly: true
+        accountType:
+          type: "string"
+          description: "The type of account that is aggregated, i.e., savings, checking, credit card, charge, HELOC, etc. The account type is derived based on the attributes of the account. <br><b>Valid Values:</b><br><b>Aggregated Account Type</b><br><b>bank</b><ul><li>CHECKING</li><li>SAVINGS</li><li>CD</li><li>PPF</li><li>RECURRING_DEPOSIT</li><li>FSA</li><li>MONEY_MARKET</li><li>IRA</li><li>PREPAID</li></ul><b>creditCard</b><ul><li>OTHER</li><li>CREDIT</li><li>STORE</li><li>CHARGE</li><li>OTHER</li></ul><b>investment (SN 1.0)</b><ul><li>BROKERAGE_MARGIN</li><li>HSA</li><li>IRA</li><li>BROKERAGE_CASH</li><li>401K</li><li>403B</li><li>TRUST</li><li>ANNUITY</li><li>SIMPLE</li><li>CUSTODIAL</li><li>BROKERAGE_CASH_OPTION</li><li>BROKERAGE_MARGIN_OPTION</li><li>INDIVIDUAL</li><li>CORPORATE</li><li>JTTIC</li><li>JTWROS</li><li>COMMUNITY_PROPERTY</li><li>JOINT_BY_ENTIRETY</li><li>CONSERVATORSHIP</li><li>ROTH</li><li>ROTH_CONVERSION</li><li>ROLLOVER</li><li>EDUCATIONAL</li><li>529_PLAN</li><li>457_DEFERRED_COMPENSATION</li><li>401A</li><li>PSP</li><li>MPP</li><li>STOCK_BASKET</li><li>LIVING_TRUST</li><li>REVOCABLE_TRUST</li><li>IRREVOCABLE_TRUST</li><li>CHARITABLE_REMAINDER</li><li>CHARITABLE_LEAD</li><li>CHARITABLE_GIFT_ACCOUNT</li><li>SEP</li><li>UTMA</li><li>UGMA</li><li>ESOPP</li><li>ADMINISTRATOR</li><li>EXECUTOR</li><li>PARTNERSHIP</li><li>SOLE_PROPRIETORSHIP</li><li>CHURCH</li><li>INVESTMENT_CLUB</li><li>RESTRICTED_STOCK_AWARD</li><li>CMA</li><li>EMPLOYEE_STOCK_PURCHASE_PLAN</li><li>PERFORMANCE_PLAN</li><li>BROKERAGE_LINK_ACCOUNT</li><li>MONEY_MARKET</li><li>SUPER_ANNUATION</li><li>REGISTERED_RETIREMENT_SAVINGS_PLAN</li><li>SPOUSAL_RETIREMENT_SAVINGS_PLAN</li><li>DEFERRED_PROFIT_SHARING_PLAN</li><li>NON_REGISTERED_SAVINGS_PLAN</li><li>REGISTERED_EDUCATION_SAVINGS_PLAN</li><li>GROUP_RETIREMENT_SAVINGS_PLAN</li><li>LOCKED_IN_RETIREMENT_SAVINGS_PLAN</li><li>RESTRICTED_LOCKED_IN_SAVINGS_PLAN</li><li>LOCKED_IN_RETIREMENT_ACCOUNT</li><li>REGISTERED_PENSION_PLAN</li><li>TAX_FREE_SAVINGS_ACCOUNT</li><li>LIFE_INCOME_FUND</li><li>REGISTERED_RETIREMENT_INCOME_FUND</li><li>SPOUSAL_RETIREMENT_INCOME_FUND</li><li>LOCKED_IN_REGISTERED_INVESTMENT_FUND</li><li>PRESCRIBED_REGISTERED_RETIREMENT_INCOME_FUND</li><li>GUARANTEED_INVESTMENT_CERTIFICATES</li><li>REGISTERED_DISABILITY_SAVINGS_PLAN</li><li>DIGITAL_WALLET</li><li>OTHER</li></ul><b>investment (SN 2.0)</b><ul><li>BROKERAGE_CASH</li><li>BROKERAGE_MARGIN</li><li>INDIVIDUAL_RETIREMENT_ACCOUNT_IRA</li><li>EMPLOYEE_RETIREMENT_ACCOUNT_401K</li><li>EMPLOYEE_RETIREMENT_SAVINGS_PLAN_403B</li><li>TRUST</li><li>ANNUITY</li><li>SIMPLE_IRA</li><li>CUSTODIAL_ACCOUNT</li><li>BROKERAGE_CASH_OPTION</li><li>BROKERAGE_MARGIN_OPTION</li><li>INDIVIDUAL</li><li>CORPORATE_INVESTMENT_ACCOUNT</li><li>JOINT_TENANTS_TENANCY_IN_COMMON_JTIC</li><li>JOINT_TENANTS_WITH_RIGHTS_OF_SURVIVORSHIP_JTWROS</li><li>JOINT_TENANTS_COMMUNITY_PROPERTY</li><li>JOINT_TENANTS_TENANTS_BY_ENTIRETY</li><li>CONSERVATOR</li><li>ROTH_IRA</li><li>ROTH_CONVERSION</li><li>ROLLOVER_IRA</li><li>EDUCATIONAL</li><li>EDUCATIONAL_SAVINGS_PLAN_529</li><li>DEFERRED_COMPENSATION_PLAN_457</li><li>MONEY_PURCHASE_RETIREMENT_PLAN_401A</li><li>PROFIT_SHARING_PLAN</li><li>MONEY_PURCHASE_PLAN</li><li>STOCK_BASKET_ACCOUNT</li><li>LIVING_TRUST</li><li>REVOCABLE_TRUST</li><li>IRREVOCABLE_TRUST</li><li>CHARITABLE_REMAINDER_TRUST</li><li>CHARITABLE_LEAD_TRUST</li><li>CHARITABLE_GIFT_ACCOUNT</li><li>SEP_IRA</li><li>UNIFORM_TRANSFER_TO_MINORS_ACT_UTMA</li><li>UNIFORM_GIFT_TO_MINORS_ACT_UGMA</li><li>EMPLOYEE_STOCK_OWNERSHIP_PLAN_ESOP</li><li>ADMINISTRATOR</li><li>EXECUTOR</li><li>PARTNERSHIP</li><li>PROPRIETORSHIP</li><li>CHURCH_ACCOUNT</li><li>INVESTMENT_CLUB</li><li>RESTRICTED_STOCK_AWARD</li><li>CASH_MANAGEMENT_ACCOUNT</li><li>EMPLOYEE_STOCK_PURCHASE_PLAN_ESPP</li><li>PERFORMANCE_PLAN</li><li>BROKERAGE_LINK_ACCOUNT</li><li>MONEY_MARKET_ACCOUNT</li><li>SUPERANNUATION</li><li>REGISTERED_RETIREMENT_SAVINGS_PLAN_RRSP</li><li>SPOUSAL_RETIREMENT_SAVINGS_PLAN_SRSP</li><li>DEFERRED_PROFIT_SHARING_PLAN_DPSP</li><li>NON_REGISTERED_SAVINGS_PLAN_NRSP</li><li>REGISTERED_EDUCATION_SAVINGS_PLAN_RESP</li><li>GROUP_RETIREMENT_SAVINGS_PLAN_GRSP</li><li>LOCKED_IN_RETIREMENT_SAVINGS_PLAN_LRSP</li><li>RESTRICTED_LOCKED_IN_SAVINGS_PLAN_RLSP</li><li>LOCKED_IN_RETIREMENT_ACCOUNT_LIRA</li><li>REGISTERED_PENSION_PLAN_RPP</li><li>TAX_FREE_SAVINGS_ACCOUNT_TFSA</li><li>LIFE_INCOME_FUND_LIF</li><li>REGISTERED_RETIREMENT_INCOME_FUND_RIF</li><li>SPOUSAL_RETIREMENT_INCOME_FUND_SRIF</li><li>LOCKED_IN_REGISTERED_INVESTMENT_FUND_LRIF</li><li>PRESCRIBED_REGISTERED_RETIREMENT_INCOME_FUND_PRIF</li><li>GUARANTEED_INVESTMENT_CERTIFICATES_GIC</li><li>REGISTERED_DISABILITY_SAVINGS_PLAN_RDSP</li><li>DEFINED_CONTRIBUTION_PLAN</li><li>DEFINED_BENEFIT_PLAN</li><li>EMPLOYEE_STOCK_OPTION_PLAN</li><li>NONQUALIFIED_DEFERRED_COMPENSATION_PLAN_409A</li><li>KEOGH_PLAN</li><li>EMPLOYEE_RETIREMENT_ACCOUNT_ROTH_401K</li><li>DEFERRED_CONTINGENT_CAPITAL_PLAN_DCCP</li><li>EMPLOYEE_BENEFIT_PLAN</li><li>EMPLOYEE_SAVINGS_PLAN</li><li>HEALTH_SAVINGS_ACCOUNT_HSA</li><li>COVERDELL_EDUCATION_SAVINGS_ACCOUNT_ESA</li><li>TESTAMENTARY_TRUST</li><li>ESTATE</li><li>GRANTOR_RETAINED_ANNUITY_TRUST_GRAT</li><li>ADVISORY_ACCOUNT</li><li>NON_PROFIT_ORGANIZATION_501C</li><li>HEALTH_REIMBURSEMENT_ARRANGEMENT_HRA</li><li>INDIVIDUAL_SAVINGS_ACCOUNT_ISA</li><li>CASH_ISA</li><li>STOCKS_AND_SHARES_ISA</li><li>INNOVATIVE_FINANCE_ISA</li><li>JUNIOR_ISA</li><li>EMPLOYEES_PROVIDENT_FUND_ORGANIZATION_EPFO</li><li>PUBLIC_PROVIDENT_FUND_PPF</li><li>EMPLOYEES_PENSION_SCHEME_EPS</li><li>NATIONAL_PENSION_SYSTEM_NPS</li><li>INDEXED_ANNUITY</li><li>ANNUITIZED_ANNUITY</li><li>VARIABLE_ANNUITY</li><li>ROTH_403B</li><li>SPOUSAL_IRA</li><li>SPOUSAL_ROTH_IRA</li><li>SARSEP_IRA</li><li>SUBSTANTIALLY_EQUAL_PERIODIC_PAYMENTS_SEPP</li><li>OFFSHORE_TRUST</li><li>IRREVOCABLE_LIFE_INSURANCE_TRUST</li><li>INTERNATIONAL_TRUST</li><li>LIFE_INTEREST_TRUST</li><li>EMPLOYEE_BENEFIT_TRUST</li><li>PRECIOUS_METAL_ACCOUNT</li><li>INVESTMENT_LOAN_ACCOUNT</li><li>GRANTOR_RETAINED_INCOME_TRUST</li><li>PENSION_PLAN</li><li>DIGITAL_WALLET</li><li>OTHER</li></ul><b>loan</b><ul><li>MORTGAGE</li><li>INSTALLMENT_LOAN</li><li>PERSONAL_LOAN</li><li>HOME_EQUITY_LINE_OF_CREDIT</li><li>LINE_OF_CREDIT</li><li>AUTO_LOAN</li><li>STUDENT_LOAN</li><li>HOME_LOAN</li></ul><b>insurance</b><ul><li>AUTO_INSURANCE</li><li>HEALTH_INSURANCE</li><li>HOME_INSURANCE</li><li>LIFE_INSURANCE</li><li>ANNUITY</li><li>TRAVEL_INSURANCE</li><li>INSURANCE</li></ul><b>realEstate</b><ul> <li>REAL_ESTATE</li></ul><b>reward</b><ul><li>REWARD_POINTS</li></ul><b>Manual Account Type</b><br><b>bank</b><ul><li>CHECKING</li><li>SAVINGS</li><li>CD</li><li>PREPAID</li></ul><b>credit</b><ul>  <li>CREDIT</li></ul><b>loan</b><ul>  <li>PERSONAL_LOAN</li><li>HOME_LOAN</li></ul><b>insurance</b><ul><li>INSURANCE</li><li>ANNUITY</li></ul><b>investment</b><ul><li>BROKERAGE_CASH</li></ul><br><br><b>Applicable containers</b>: bank<br><b>Associated Accounts<br><b>Endpoints</b>:<ul><li>GET Associated Accounts/{providerAccountId}</li></ul>"
+          readOnly: true
+        holder:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorHolder"
+        verificationType:
+          type: "string"
+          description: "The account verification type.<br><b>Applicable Values:</b><br> * MATCHING"
+          readOnly: true
+        bankTransferCode:
+          type: "array"
+          description: "Bank and branch identification information.<br><b>Applicable containers</b>: bank, investment, loan"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorBankTransferCode"
+    AccountDataset:
+      title: "AccountDataset"
+      type: "object"
+      properties:
+        lastUpdated:
+          type: "string"
+          description: "Indicate when the dataset is last updated successfully for the given provider account.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET providerAccounts</li><li>POST providerAccounts</li><li>PUT providerAccounts/{providerAccountId}</li><li>GET providerAccounts/{providerAccountId}</li></ul>"
+          readOnly: true
+        updateEligibility:
+          type: "string"
+          description: "Indicate whether the dataset is eligible for update or not.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET providerAccounts</li><li>POST providerAccounts</li><li>PUT providerAccounts/{providerAccountId}</li><li>GET providerAccounts/{providerAccountId}</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "ALLOW_UPDATE"
+          - "ALLOW_UPDATE_WITH_CREDENTIALS"
+          - "DISALLOW_UPDATE"
+        additionalStatus:
+          type: "string"
+          description: "The status of last update attempted for the dataset. <br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET providerAccounts</li><li>POST providerAccounts</li><li>PUT providerAccounts/{providerAccountId}</li><li>GET providerAccounts/{providerAccountId}</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "LOGIN_IN_PROGRESS"
+          - "DATA_RETRIEVAL_IN_PROGRESS"
+          - "ACCT_SUMMARY_RECEIVED"
+          - "AVAILABLE_DATA_RETRIEVED"
+          - "PARTIAL_DATA_RETRIEVED"
+          - "DATA_RETRIEVAL_FAILED"
+          - "DATA_NOT_AVAILABLE"
+          - "ACCOUNT_LOCKED"
+          - "ADDL_AUTHENTICATION_REQUIRED"
+          - "BETA_SITE_DEV_IN_PROGRESS"
+          - "CREDENTIALS_UPDATE_NEEDED"
+          - "INCORRECT_CREDENTIALS"
+          - "PROPERTY_VALUE_NOT_AVAILABLE"
+          - "INVALID_ADDL_INFO_PROVIDED"
+          - "REQUEST_TIME_OUT"
+          - "SITE_BLOCKING_ERROR"
+          - "UNEXPECTED_SITE_ERROR"
+          - "SITE_NOT_SUPPORTED"
+          - "SITE_UNAVAILABLE"
+          - "TECH_ERROR"
+          - "USER_ACTION_NEEDED_AT_SITE"
+          - "SITE_SESSION_INVALIDATED"
+          - "NEW_AUTHENTICATION_REQUIRED"
+          - "DATASET_NOT_SUPPORTED"
+          - "ENROLLMENT_REQUIRED_FOR_DATASET"
+          - "CONSENT_REQUIRED"
+          - "CONSENT_EXPIRED"
+          - "CONSENT_REVOKED"
+          - "INCORRECT_OAUTH_TOKEN"
+          - "MIGRATION_IN_PROGRESS"
+        nextUpdateScheduled:
+          type: "string"
+          description: "Indicates when the next attempt to update the dataset is scheduled.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET providerAccounts</li><li>POST providerAccounts</li><li>PUT providerAccounts/{providerAccountId}</li><li>GET providerAccounts/{providerAccountId}</li></ul>"
+          readOnly: true
+        name:
+          type: "string"
+          description: "The name of the dataset requested from the provider site<br><br><b>Account Type</b>: Manual<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET providerAccounts</li><li>POST providerAccounts</li><li>PUT providerAccounts/{providerAccountId}</li><li>GET providerAccounts/{providerAccountId}</li><li>GET providers/{providerId}</li><li>GET providers</li></ul><b>Applicable Values</b><br>"
+          enum:
+          - "BASIC_AGG_DATA"
+          - "ADVANCE_AGG_DATA"
+          - "ACCT_PROFILE"
+          - "DOCUMENT"
+        lastUpdateAttempt:
+          type: "string"
+          description: "Indicate when the last attempt was performed to update the dataset for the given provider account<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET providerAccounts</li><li>POST providerAccounts</li><li>PUT providerAccounts/{providerAccountId}</li><li>GET providerAccounts/{providerAccountId}</li></ul>"
+          readOnly: true
+    CreditAcceleratorSummary:
+      title: "CreditAcceleratorSummary"
+      type: "object"
+      properties:
+        avg:
+          type: "number"
+          description: "Average amount for the time period (sum divided by count)."
+          format: "double"
+          readOnly: true
+        count:
+          type: "number"
+          description: "Number of data points available in the time period."
+          format: "double"
+          readOnly: true
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested."
+          readOnly: true
+        sum:
+          type: "number"
+          description: "Total amount for the time period."
+          format: "double"
+          readOnly: true
+    AutoRefresh:
+      title: "AutoRefresh"
+      type: "object"
+      properties:
+        additionalStatus:
+          type: "string"
+          description: "Indicates the reason for the status.<br><br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "SCHEDULED"
+          - "TEMP_ERROR"
+          - "SITE_BLOCKING"
+          - "SITE_NOT_SUPPORTED"
+          - "REAL_TIME_MFA_REQUIRED"
+          - "USER_ACTION_REQUIRED"
+          - "UNSUBSCRIBED"
+          - "MANUAL_ACCOUNT"
+        asOfDate:
+          type: "string"
+          description: "Date on which the auto refresh status is determined.<br><br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+        status:
+          type: "string"
+          description: "Indicates whether auto refresh is enabled or disabled.<br><br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "ENABLED"
+          - "DISABLED"
+    CreditAcceleratorLowBalanceOccurenceALL:
+      title: "CreditAcceleratorLowBalanceOccurenceALL"
+      type: "object"
+      properties:
+        segment2:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+        segment1:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+        segment4:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+        segment3:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+    CreditAcceleratorDailySummary:
+      title: "CreditAcceleratorDailySummary"
+      type: "object"
+      properties:
+        avg:
+          type: "number"
+          description: "Average amount for the time period (sum divided by count)."
+          format: "double"
+          readOnly: true
+        min:
+          $ref: "#/components/schemas/CreditAcceleratorBalance"
+        max:
+          $ref: "#/components/schemas/CreditAcceleratorBalance"
+        count:
+          type: "number"
+          description: "Number of data points available in the time period."
+          format: "double"
+          readOnly: true
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested."
+          readOnly: true
+        sum:
+          type: "number"
+          description: "Total amount for the time period."
+          format: "double"
+          readOnly: true
+    CreditAcceleratorUser:
+      title: "CreditAcceleratorUser"
+      type: "object"
+      properties:
+        loginName:
+          type: "string"
+          description: "The login name of the user used for authentication. This has to be provided as an input to the POST user/login service."
+          readOnly: true
+        name:
+          $ref: "#/components/schemas/Name"
+        userId:
+          type: "integer"
+          description: "The unique identifier of a consumer/user in the Yodlee system for whom the API services would be accessed for."
+          format: "int64"
+          readOnly: true
+        email:
+          type: "string"
+          description: "The email address of the user."
+          readOnly: true
+    ClientCredentialTokenResponse:
+      title: "ClientCredentialTokenResponse"
+      type: "object"
+      properties:
+        token:
+          $ref: "#/components/schemas/ClientCredentialToken"
+    Description:
+      title: "Description"
+      type: "object"
+      properties:
+        security:
+          type: "string"
+          description: "The description will provide the actual name of the security.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        original:
+          type: "string"
+          description: "Original transaction description as it appears at the FI site.<br><br><b>Applicable containers</b>: creditCard, insurance, loan<br>"
+          readOnly: true
+        simple:
+          type: "string"
+          description: "The transaction description that appears at the FI site may not be self-explanatory, i.e., the source, purpose of the transaction may not be evident. Yodlee attempts to simplify and make the transaction meaningful to the consumer, and this simplified transaction description is provided in the simple description field.Note: The simple description field is available only in the United States, Canada, United Kingdom, and India.<br><br><b>Applicable containers</b>: creditCard, insurance, loan<br>"
+          readOnly: true
+        consumer:
+          type: "string"
+          description: "The description of the transaction as defined by the consumer. The consumer can define or provide more details of the transaction in this field.<br><br>"
+    CreditAcceleratorBalanceOccurrence:
+      title: "CreditAcceleratorBalanceOccurrence"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorOccurence"
+        currency:
+          type: "string"
+    CreditAcceleratorDocument:
+      title: "CreditAcceleratorDocument"
+      type: "object"
+      properties:
+        accountID:
+          type: "integer"
+          description: "The primary key of the account resource and the unique identifier for the account.<br><br><b>Aggregated / Manual</b>: Both <br><b>Applicable containers</b>: All containers<br><b>Endpoints</b>:<ul><li>GET accounts </li><li>GET accounts/{accountId}</li><li>GET investmentOptions</li><li>GET accounts/historicalBalances</li><li>POST accounts</ul>"
+          format: "int64"
+          readOnly: true
+        lastUpdated:
+          type: "string"
+          description: "Indicates the date and time the document was last updated.<br><br><b>Applicable containers</b>: bank and investment<br>"
+          readOnly: true
+        formType:
+          type: "string"
+          description: "Indicates the type of the tax form."
+          readOnly: true
+        docType:
+          type: "string"
+          description: "Indicates the type of the document."
+          readOnly: true
+        name:
+          type: "string"
+          description: "The name of the document.<br><br><b>Applicable containers</b>: bank and investment<br>"
+          readOnly: true
+        statementDate:
+          type: "string"
+          description: "Indicates the date and time of the document.<br><br><b>Applicable containers</b>: bank and investment<br>"
+          readOnly: true
+        id:
+          type: "string"
+          description: "The document's primary key and unique identifier.<br><br><b>Applicable containers</b>: bank and investment<br>"
+          readOnly: true
+        source:
+          type: "string"
+          description: "Indicates the source of the document download.<br><br><b>Applicable containers</b>: bank and investment<br>"
+          readOnly: true
+        uri:
+          type: "string"
+          description: "Relative URI to fetch the actual document"
+          readOnly: true
+        status:
+          type: "string"
+          description: "Indicates the status of the document download.<br><br><b>Applicable containers</b>: bank and investment<br>"
+          readOnly: true
+    CreditAcceleratorLowBalanceOccurrence:
+      title: "CreditAcceleratorLowBalanceOccurrence"
+      type: "object"
+      properties:
+        segment2:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrence"
+        segment1:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrence"
+        segment4:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrence"
+        segment3:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrence"
+    CreditAcceleratorAllAccountAnalysis:
+      title: "CreditAcceleratorAllAccountAnalysis"
+      type: "object"
+      properties:
+        income:
+          $ref: "#/components/schemas/CreditAcceleratorAllAccountIncome"
+        asset:
+          $ref: "#/components/schemas/CreditAcceleratorAllAccountAsset"
+        expense:
+          $ref: "#/components/schemas/CreditAcceleratorAllAccountExpense"
+    Money:
+      title: "Money"
+      type: "object"
+      properties:
+        amount:
+          type: "number"
+          description: "Value of amount."
+          format: "double"
+        convertedAmount:
+          type: "number"
+          description: "Value of the converted amount."
+          format: "double"
+        currency:
+          type: "string"
+          description: "Currency should be a valid three-letter ISO Code."
+          enum:
+          - "USD"
+          - "AUD"
+          - "BRL"
+          - "CAD"
+          - "EUR"
+          - "GBP"
+          - "HKD"
+          - "IDR"
+          - "INR"
+          - "JPY"
+          - "NZD"
+          - "SGD"
+          - "ZAR"
+          - "CNY"
+          - "VND"
+          - "MYR"
+          - "CHF"
+          - "AED"
+          - "AFA"
+          - "ALL"
+          - "AMD"
+          - "ANG"
+          - "AOA"
+          - "ARS"
+          - "AWG"
+          - "AZM"
+          - "BAM"
+          - "BBD"
+          - "BDT"
+          - "BGL"
+          - "BHD"
+          - "BIF"
+          - "BMD"
+          - "BND"
+          - "BOB"
+          - "BSD"
+          - "BTN"
+          - "BWP"
+          - "BYR"
+          - "BZD"
+          - "CDF"
+          - "CLP"
+          - "COP"
+          - "CRC"
+          - "CUP"
+          - "CVE"
+          - "CYP"
+          - "CZK"
+          - "DJF"
+          - "DKK"
+          - "DOP"
+          - "DZD"
+          - "EEK"
+          - "EGP"
+          - "ERN"
+          - "ETB"
+          - "FJD"
+          - "FKP"
+          - "GEL"
+          - "GGP"
+          - "GHC"
+          - "GIP"
+          - "GMD"
+          - "GNF"
+          - "GTQ"
+          - "GYD"
+          - "HNL"
+          - "HRK"
+          - "HTG"
+          - "HUF"
+          - "ILS"
+          - "IMP"
+          - "IQD"
+          - "IRR"
+          - "ISK"
+          - "JEP"
+          - "JMD"
+          - "JOD"
+          - "KES"
+          - "KGS"
+          - "KHR"
+          - "KMF"
+          - "KPW"
+          - "KRW"
+          - "KWD"
+          - "KYD"
+          - "KZT"
+          - "LAK"
+          - "LBP"
+          - "LKR"
+          - "LRD"
+          - "LSL"
+          - "LTL"
+          - "LVL"
+          - "LYD"
+          - "MAD"
+          - "MDL"
+          - "MGF"
+          - "MKD"
+          - "MMK"
+          - "MNT"
+          - "MOP"
+          - "MRO"
+          - "MTL"
+          - "MUR"
+          - "MVR"
+          - "MWK"
+          - "MXN"
+          - "MZM"
+          - "NAD"
+          - "NGN"
+          - "NIO"
+          - "NOK"
+          - "NPR"
+          - "OMR"
+          - "PAB"
+          - "PEN"
+          - "PGK"
+          - "PHP"
+          - "PKR"
+          - "PLN"
+          - "PYG"
+          - "QAR"
+          - "ROL"
+          - "RUR"
+          - "RWF"
+          - "SAR"
+          - "SBD"
+          - "SCR"
+          - "SDD"
+          - "SEK"
+          - "SHP"
+          - "SIT"
+          - "SKK"
+          - "SLL"
+          - "SOS"
+          - "SPL"
+          - "SRG"
+          - "STD"
+          - "SVC"
+          - "SYP"
+          - "SZL"
+          - "THB"
+          - "TJR"
+          - "TMM"
+          - "TND"
+          - "TOP"
+          - "TRL"
+          - "TTD"
+          - "TVD"
+          - "TWD"
+          - "TZS"
+          - "UAH"
+          - "UGX"
+          - "UYU"
+          - "UZS"
+          - "VEB"
+          - "VUV"
+          - "WST"
+          - "XAF"
+          - "XAG"
+          - "XAU"
+          - "XCD"
+          - "XDR"
+          - "XOF"
+          - "XPD"
+          - "XPF"
+          - "XPT"
+          - "YER"
+          - "YUM"
+          - "ZMK"
+          - "ZWD"
+          - "ADP"
+          - "ATS"
+          - "BEF"
+          - "BUK"
+          - "CSD"
+          - "CSK"
+          - "DDM"
+          - "DEM"
+          - "ECS"
+          - "ESP"
+          - "FIM"
+          - "GRD"
+          - "GWP"
+          - "IEP"
+          - "ITL"
+          - "LUF"
+          - "MLF"
+          - "NLG"
+          - "PTE"
+          - "SUR"
+          - "TPE"
+          - "UAK"
+          - "XBA"
+          - "XBB"
+          - "XBC"
+          - "XBD"
+          - "XEU"
+          - "XFO"
+          - "XFU"
+          - "XGF"
+          - "XMK"
+          - "XRM"
+          - "XTS"
+          - "YDD"
+          - "YUD"
+          - "ZRN"
+          - "TJS"
+          - "RON"
+          - "BGN"
+          - "BTC"
+          - "XBT"
+          - "CNH"
+          - "RUB"
+          - "TRY"
+          - "GHS"
+          - "TMT"
+          - "ZMW"
+          - "VEF"
+          - "SSP"
+          - "ALK"
+        convertedCurrency:
+          type: "string"
+          description: "Currency should be a valid three-letter ISO Code."
+          enum:
+          - "USD"
+          - "AUD"
+          - "BRL"
+          - "CAD"
+          - "EUR"
+          - "GBP"
+          - "HKD"
+          - "IDR"
+          - "INR"
+          - "JPY"
+          - "NZD"
+          - "SGD"
+          - "ZAR"
+          - "CNY"
+          - "VND"
+          - "MYR"
+          - "CHF"
+          - "AED"
+          - "AFA"
+          - "ALL"
+          - "AMD"
+          - "ANG"
+          - "AOA"
+          - "ARS"
+          - "AWG"
+          - "AZM"
+          - "BAM"
+          - "BBD"
+          - "BDT"
+          - "BGL"
+          - "BHD"
+          - "BIF"
+          - "BMD"
+          - "BND"
+          - "BOB"
+          - "BSD"
+          - "BTN"
+          - "BWP"
+          - "BYR"
+          - "BZD"
+          - "CDF"
+          - "CLP"
+          - "COP"
+          - "CRC"
+          - "CUP"
+          - "CVE"
+          - "CYP"
+          - "CZK"
+          - "DJF"
+          - "DKK"
+          - "DOP"
+          - "DZD"
+          - "EEK"
+          - "EGP"
+          - "ERN"
+          - "ETB"
+          - "FJD"
+          - "FKP"
+          - "GEL"
+          - "GGP"
+          - "GHC"
+          - "GIP"
+          - "GMD"
+          - "GNF"
+          - "GTQ"
+          - "GYD"
+          - "HNL"
+          - "HRK"
+          - "HTG"
+          - "HUF"
+          - "ILS"
+          - "IMP"
+          - "IQD"
+          - "IRR"
+          - "ISK"
+          - "JEP"
+          - "JMD"
+          - "JOD"
+          - "KES"
+          - "KGS"
+          - "KHR"
+          - "KMF"
+          - "KPW"
+          - "KRW"
+          - "KWD"
+          - "KYD"
+          - "KZT"
+          - "LAK"
+          - "LBP"
+          - "LKR"
+          - "LRD"
+          - "LSL"
+          - "LTL"
+          - "LVL"
+          - "LYD"
+          - "MAD"
+          - "MDL"
+          - "MGF"
+          - "MKD"
+          - "MMK"
+          - "MNT"
+          - "MOP"
+          - "MRO"
+          - "MTL"
+          - "MUR"
+          - "MVR"
+          - "MWK"
+          - "MXN"
+          - "MZM"
+          - "NAD"
+          - "NGN"
+          - "NIO"
+          - "NOK"
+          - "NPR"
+          - "OMR"
+          - "PAB"
+          - "PEN"
+          - "PGK"
+          - "PHP"
+          - "PKR"
+          - "PLN"
+          - "PYG"
+          - "QAR"
+          - "ROL"
+          - "RUR"
+          - "RWF"
+          - "SAR"
+          - "SBD"
+          - "SCR"
+          - "SDD"
+          - "SEK"
+          - "SHP"
+          - "SIT"
+          - "SKK"
+          - "SLL"
+          - "SOS"
+          - "SPL"
+          - "SRG"
+          - "STD"
+          - "SVC"
+          - "SYP"
+          - "SZL"
+          - "THB"
+          - "TJR"
+          - "TMM"
+          - "TND"
+          - "TOP"
+          - "TRL"
+          - "TTD"
+          - "TVD"
+          - "TWD"
+          - "TZS"
+          - "UAH"
+          - "UGX"
+          - "UYU"
+          - "UZS"
+          - "VEB"
+          - "VUV"
+          - "WST"
+          - "XAF"
+          - "XAG"
+          - "XAU"
+          - "XCD"
+          - "XDR"
+          - "XOF"
+          - "XPD"
+          - "XPF"
+          - "XPT"
+          - "YER"
+          - "YUM"
+          - "ZMK"
+          - "ZWD"
+          - "ADP"
+          - "ATS"
+          - "BEF"
+          - "BUK"
+          - "CSD"
+          - "CSK"
+          - "DDM"
+          - "DEM"
+          - "ECS"
+          - "ESP"
+          - "FIM"
+          - "GRD"
+          - "GWP"
+          - "IEP"
+          - "ITL"
+          - "LUF"
+          - "MLF"
+          - "NLG"
+          - "PTE"
+          - "SUR"
+          - "TPE"
+          - "UAK"
+          - "XBA"
+          - "XBB"
+          - "XBC"
+          - "XBD"
+          - "XEU"
+          - "XFO"
+          - "XFU"
+          - "XGF"
+          - "XMK"
+          - "XRM"
+          - "XTS"
+          - "YDD"
+          - "YUD"
+          - "ZRN"
+          - "TJS"
+          - "RON"
+          - "BGN"
+          - "BTC"
+          - "XBT"
+          - "CNH"
+          - "RUB"
+          - "TRY"
+          - "GHS"
+          - "TMT"
+          - "ZMW"
+          - "VEF"
+          - "SSP"
+          - "ALK"
+    CreateConfigsNotificationEvent:
+      title: "CreateConfigsNotificationEvent"
+      type: "object"
+      properties:
+        callbackUrl:
+          maxLength: 2147483647
+          minLength: 1
+          type: "string"
+          description: "URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul>"
+    CreditAcceleratorSelectedAccount:
+      title: "CreditAcceleratorSelectedAccount"
+      type: "object"
+      properties:
+        providerAccountId:
+          type: "integer"
+          description: "Unique identifier for the provider account resource. This is created during account addition."
+          format: "int64"
+          readOnly: true
+        id:
+          type: "integer"
+          description: "The primary key of the account resource and the unique identifier for the account."
+          format: "int64"
+          readOnly: true
+    CreditAcceleratorRequestingFirm:
+      title: "CreditAcceleratorRequestingFirm"
+      type: "object"
+      properties:
+        requestingFirmId:
+          type: "string"
+          description: "Unique identifier for the requesting firm"
+          readOnly: true
+        referenceNo:
+          type: "string"
+          description: "Reference number of requesting firm"
+          readOnly: true
+        name:
+          type: "string"
+          description: "Name of the requesting firm"
+          readOnly: true
+        broker:
+          type: "string"
+          description: "Name of the broker"
+          readOnly: true
+    CreditAcceleratorAccountAsset:
+      title: "CreditAcceleratorAccountAsset"
+      type: "object"
+      properties:
+        dailyBalanceAnalysis:
+          $ref: "#/components/schemas/CreditAcceleratorDailyBalanceAnalysis"
+        adjustmentTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        creditTxnWithoutTransferSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        largeTransferOccurrences:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrenceWithTxn"
+        dailyBalanceSummary:
+          $ref: "#/components/schemas/CreditAcceleratorDailyBalanceSummary"
+        depositTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        dailyBalances:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorDailyBalance"
+        largeDepositOccurrences:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrenceWithTxn"
+        lowBalanceOccurrence:
+          $ref: "#/components/schemas/CreditAcceleratorLowBalanceOccurrence"
+        negativeBalanceOccurrences:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrence"
+        transferTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        creditTxnWithTransferSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        investmentHoldingSummary:
+          $ref: "#/components/schemas/CreditAcceleratorInvestmentHoldingSummary"
+        nsfOccurrences:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceOccurrenceWithTxn"
+    CreditAcceleratorAllAccountBalanceSummary:
+      title: "CreditAcceleratorAllAccountBalanceSummary"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorSummary"
+        currency:
+          type: "string"
+    CreditAcceleratorBalance:
+      title: "CreditAcceleratorBalance"
+      type: "object"
+      properties:
+        date:
+          type: "string"
+          description: "Date of balance."
+          readOnly: true
+        amount:
+          type: "number"
+          description: "Balance amount value."
+          format: "double"
+          readOnly: true
+        currency:
+          $ref: "#/components/schemas/CreditAcceleratorData"
+    CreditAcceleratorTransaction:
+      title: "CreditAcceleratorTransaction"
+      type: "object"
+      properties:
+        date:
+          type: "string"
+          description: "The value provided will be either postDate or transactionDate. postDate takes higher priority than transactionDate, except for the investment container as only transactionDate is available. The availability of postDate or transactionDate depends on the provider site.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        sourceId:
+          type: "string"
+          description: "A unique ID that the provider site has assigned to the transaction. The source ID is only available for the pre-populated accounts.<br>Pre-populated accounts are the accounts that the FI customers shares with Yodlee, so that the user does not have to add or aggregate those accounts."
+          readOnly: true
+        symbol:
+          type: "string"
+          description: "The symbol of the security being traded.<br><b>Note</b>: The settle date field applies only to trade-related transactions. <br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        cusipNumber:
+          type: "string"
+          description: "The CUSIP (Committee on Uniform Securities Identification Procedures) identifies the financial instruments in the United States and Canada.<br><b><br><b>Note</b></b>: The CUSIP number field applies only to trade related transactions.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        highLevelCategoryId:
+          type: "integer"
+          description: "The high level category assigned to the transaction. The supported values are provided by the GET transactions/categories. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          format: "int64"
+          readOnly: true
+        categoryLabel:
+          type: "string"
+          description: "Additional category information from the Yodlee reference data, if available."
+          readOnly: true
+        detailCategoryId:
+          type: "integer"
+          description: "The id of the detail category that is assigned to the transaction. The supported values are provided by GET transactions/categories.<br><br><b>Applicable containers</b>: bank,creditCard<br>"
+          format: "int64"
+          readOnly: true
+        description:
+          $ref: "#/components/schemas/Description"
+        memo:
+          type: "string"
+          description: "Additional notes provided by the user for a particular  transaction through application or API services. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        settleDate:
+          type: "string"
+          description: "It is the date on which the transaction is finalized, that is, the date the ownership of the security is transferred to the buyer. The settlement date is usually few days after the transaction date.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        type:
+          type: "string"
+          description: "The nature of the transaction, i.e., deposit, refund, payment, etc.<br><b>Note</b>: The transaction type field is available only for the United States, Canada, United Kingdom, and India based provider sites. <br><br><b>Applicable containers</b>: bank,creditCard,investment<br>"
+          readOnly: true
+        intermediary:
+          type: "array"
+          description: "The intermediary of the transaction.<br><br><b>Applicable containers</b>:  bank,creditCard,investment,loan<br>"
+          readOnly: true
+          items:
+            type: "string"
+        baseType:
+          type: "string"
+          description: "Indicates if the transaction appears as a debit or a credit transaction in the account. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "CREDIT"
+          - "DEBIT"
+        categorySource:
+          type: "string"
+          description: "Indicates the source of the category, i.e., categories derived by the system or assigned/provided by the consumer. This is the source field of the transaction category resource. The supported values are provided by the GET transactions/categories.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "SYSTEM"
+          - "USER"
+        principal:
+          $ref: "#/components/schemas/Money"
+        lastUpdated:
+          type: "string"
+          description: "Last update date and time of transaction"
+          readOnly: true
+        interest:
+          $ref: "#/components/schemas/Money"
+        price:
+          $ref: "#/components/schemas/Money"
+        commission:
+          $ref: "#/components/schemas/Money"
+        id:
+          type: "integer"
+          description: "An unique identifier for the transaction. The combination of the id and account container are unique in the system. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          format: "int64"
+          readOnly: true
+        merchantLogoURL:
+          type: "string"
+          description: "The URL of the merchant logo."
+          readOnly: true
+        merchantType:
+          type: "string"
+          description: "Indicates the merchantType of the transaction.e.g:-BILLERS,SUBSCRIPTION,OTHERS <br><br><b>Applicable containers</b>: bank,creditCard,investment,loan<br>"
+          readOnly: true
+        amount:
+          $ref: "#/components/schemas/Money"
+        checkNumber:
+          type: "string"
+          description: "The checkNumber of the transaction.<br><br><b>Applicable containers</b>: bank<br>"
+          readOnly: true
+        isPhysical:
+          type: "boolean"
+          description: "Indicates if the transaction is happened online or in-store. <br><br><b>Applicable containers</b>: bank,creditCard,investment,loan<br>"
+          readOnly: true
+        quantity:
+          type: "number"
+          description: "The quantity associated with the transaction.<br><b>Note</b>: The quantity field applies only to trade-related transactions.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        valoren:
+          type: "string"
+          description: "It is an identification number that is assigned to financial instruments such as stocks and bonds trading in Switzerland.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        isManual:
+          type: "boolean"
+          description: "Indicates if the transaction is aggregated from the FI site or the consumer has manually created the transaction using the application or an API. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        merchant:
+          $ref: "#/components/schemas/CreditAcceleratorMerchant"
+        sedol:
+          type: "string"
+          description: "SEDOL stands for Stock Exchange Daily Official List, a list of security identifiers used in the United Kingdom and Ireland for clearing purposes.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        transactionDate:
+          type: "string"
+          description: "The date the transaction happens in the account. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        logoURL:
+          type: "string"
+          description: "The URL of the merchant logo."
+          readOnly: true
+        categoryType:
+          type: "string"
+          description: "The categoryType of the category assigned to the transaction. This is the type field of the transaction category resource. The supported values are provided by the GET transactions/categories.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+          enum:
+          - "TRANSFER"
+          - "DEFERRED_COMPENSATION"
+          - "UNCATEGORIZE"
+          - "INCOME"
+          - "EXPENSE"
+        accountId:
+          type: "integer"
+          description: "The account from which the transaction was made. This is basically the primary key of the account resource. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          format: "int64"
+          readOnly: true
+        createdDate:
+          type: "string"
+          description: "Created date of transaction"
+          readOnly: true
+        sourceType:
+          type: "string"
+          description: "The source through which the transaction is added to the Yodlee system.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loann<br><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "AGGREGATED"
+          - "MANUAL"
+        CONTAINER:
+          type: "string"
+          description: "The account's container.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "bank"
+          - "creditCard"
+          - "investment"
+          - "insurance"
+          - "loan"
+          - "reward"
+          - "bill"
+          - "realEstate"
+          - "otherAssets"
+          - "otherLiabilities"
+        postDate:
+          type: "string"
+          description: "The date on which the transaction is posted to the account.<br><br><b>Applicable containers</b>: bank,creditCard,insurance,loan<br>"
+          readOnly: true
+        parentCategoryId:
+          type: "integer"
+          description: "The parentCategoryId of the category assigned to the transaction.<br><b>Note</b>: This field will be provided in the response if the transaction is assigned to a user-created category. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          format: "int64"
+          readOnly: true
+        subType:
+          type: "string"
+          description: "The transaction subtype field provides a detailed transaction type. For example, purchase is a transaction type and the transaction subtype field indicates if the purchase was made using a debit or credit card.<br><b>Note</b>: The transaction subtype field is available only in the United States, Canada, United Kingdom, and India.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+          enum:
+          - "OVERDRAFT_CHARGE"
+          - "ONLINE_PURCHASE"
+          - "TAX_PAYMENT"
+          - "PAYMENT_BY_CHECK"
+          - "ATM_CASH_WITHDRAWAL"
+          - "SERVICE_CHARGE"
+          - "RETURNED_CHECK_CHARGE"
+          - "STOP_PAYMENT_CHARGE"
+          - "CONVENIENCE_FEE"
+          - "AUTO_LOAN"
+          - "HOME_LOAN_MORTGAGE"
+          - "RECURRING_SUBSCRIPTION_PAYMENT"
+          - "INTEREST"
+          - "PAYMENT"
+          - "PURCHASE"
+          - "REFUND"
+          - "TRANSFER"
+          - "FINANCE_CHARGE"
+          - "OTHER_CHARGES_FEES"
+          - "ANNUAL_FEE"
+          - "DEPOSIT"
+          - "DIRECT_DEPOSIT_SALARY"
+          - "INVESTMENT_INCOME_CASH"
+          - "SSA"
+          - "REWARDS"
+          - "TAX_REFUND"
+          - "CREDIT_CARD_PAYMENT"
+          - "INSURANCE_PAYMENT"
+          - "UTILITIES_PAYMENT"
+          - "CHILD_SUPPORT"
+          - "LOAN"
+          - "PERSONAL_LOAN"
+          - "STUDENT_LOAN"
+          - "REIMBURSEMENT"
+          - "BALANCE_TRANSFER"
+          - "OVERDRAFT_PROTECTION"
+          - "CREDIT"
+          - "NSF_FEES"
+        category:
+          type: "string"
+          description: "The name of the category assigned to the transaction. This is the category field of the transaction category resource. The supported values are provided by the GET transactions/categories.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        runningBalance:
+          $ref: "#/components/schemas/Money"
+        categoryId:
+          type: "integer"
+          description: "The id of the category assigned to the transaction. This is the id field of the transaction category resource. The supported values are provided by the GET transactions/categories.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          format: "int64"
+          readOnly: true
+        holdingDescription:
+          type: "string"
+          description: "For transactions involving securities, this captures the securities description.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        isin:
+          type: "string"
+          description: "International Securities Identification Number (ISIN) standard is used worldwide to identify specific securities.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        status:
+          type: "string"
+          description: "The status of the transaction: pending or posted.<br><b>Note</b>: Most FI sites only display posted transactions. If the FI site displays transaction status, same will be aggregated.  <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "POSTED"
+          - "PENDING"
+          - "SCHEDULED"
+          - "FAILED"
+          - "CLEARED"
+    CreditAcceleratorAccountExpense:
+      title: "CreditAcceleratorAccountExpense"
+      type: "object"
+      properties:
+        cashTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        entertainmentTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        taxesTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        telecomTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        cashflow:
+          $ref: "#/components/schemas/CreditAcceleratorCashFlow"
+        insuranceTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        charityTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        ccardTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        rentTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        utilitiesTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        educationTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+        loanTxnSummary:
+          $ref: "#/components/schemas/CreditAcceleratorBalanceSummary"
+    UpdateConfigsNotificationEventRequest:
+      title: "UpdateConfigsNotificationEventRequest"
+      required:
+      - "event"
+      type: "object"
+      properties:
+        event:
+          $ref: "#/components/schemas/UpdateConfigsNotificationEvent"
+    CreditAcceleratorFileResponse:
+      title: "CreditAcceleratorFileResponse"
+      type: "object"
+      properties:
+        configName:
+          type: "string"
+          description: "The config name using which the credit accelerator file generation was requested"
+          readOnly: true
+        reportId:
+          type: "integer"
+          description: "Unique identifier for the credit accelerator file"
+          format: "int64"
+          readOnly: true
+        submissionDate:
+          type: "string"
+          description: "Date on which the request to generate credit accelerator file was submitted"
+          readOnly: true
+        originalReportId:
+          type: "integer"
+          description: "Report id of original report on which refresh is performed. This is not available when report is generated for the first time."
+          format: "int64"
+          readOnly: true
+        status:
+          type: "string"
+          description: "Generation status of the requested credit accelerator file requested"
+          readOnly: true
+          enum:
+          - "SUBMITTED"
+          - "IN_PROGRESS"
+          - "COMPLETED"
+          - "FAILED"
+    CreditAcceleratorRefreshRequest:
+      title: "CreditAcceleratorRefreshRequest"
+      required:
+      - "configName"
+      type: "object"
+      properties:
+        configName:
+          type: "string"
+          description: "The config name using which the credit accelerator file generation was requested"
+    CreditAcceleratorData:
+      title: "CreditAcceleratorData"
+      type: "object"
+      properties:
+        allAccountAnalysis:
+          $ref: "#/components/schemas/CreditAcceleratorAllAccountAnalysis"
+        accounts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAccountSummary"
+    Holding:
+      title: "Holding"
+      type: "object"
+      properties:
+        symbol:
+          type: "string"
+          description: "The symbol of the security.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        exercisedQuantity:
+          type: "number"
+          description: "The quantity of the employee stock options that are already exercised or bought by the employee.<br><b>Note</b>: Once the employee stock options is exercised, they are either converted to cash value or equity positions depending on the FI. The exercised quantity field is only applicable to employee stock options.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        cusipNumber:
+          type: "string"
+          description: "The CUSIP (Committee on Uniform Securities Identification Procedures) identifies most the financial instruments in the United States and Canada.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        assetClassification:
+          type: "array"
+          description: "Asset classification applied to the holding. <br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/AssetClassification"
+        vestedQuantity:
+          type: "number"
+          description: "The quantity of units or shares that are already vested on a vest date.<br><b>Note</b>: The vested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        description:
+          type: "string"
+          description: "The description (name) for the holding (E.g., Cisco Systems)<br>For insurance container, the field is only applicable for insurance annuity and variable life insurance types. <br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+        unvestedValue:
+          $ref: "#/components/schemas/Money"
+        securityStyle:
+          type: "string"
+          description: "Indicates the security style of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+        vestedValue:
+          $ref: "#/components/schemas/Money"
+        optionType:
+          type: "string"
+          description: "The type of the option position (i.e., put or call).<br><b>Note</b>: The option type field is only applicable to options.<br><br><b>Applicable containers</b>: investment<br><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "put"
+          - "call"
+          - "unknown"
+          - "other"
+        lastUpdated:
+          type: "string"
+          description: "The date when the information was last updated in the system.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+        matchStatus:
+          type: "string"
+          description: "Indicates the security match status id of the investment option identified during security normalization.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        holdingType:
+          type: "string"
+          description: "Type of holding<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+          enum:
+          - "stock"
+          - "mutualFund"
+          - "bond"
+          - "CD"
+          - "option"
+          - "moneyMarketFund"
+          - "other"
+          - "remic"
+          - "future"
+          - "commodity"
+          - "currency"
+          - "unitInvestmentTrust"
+          - "employeeStockOption"
+          - "insuranceAnnuity"
+          - "unknown"
+          - "preferredStock"
+          - "ETF"
+          - "warrants"
+          - "digitalAsset"
+        maturityDate:
+          type: "string"
+          description: "The stated maturity date of a bond or CD.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        price:
+          $ref: "#/components/schemas/Money"
+        term:
+          type: "string"
+          description: "The fixed duration for which the bond or CD is issued.<br><b>Note</b>: The term field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        contractQuantity:
+          type: "number"
+          description: "The quantity of tradeable units in a contract.<br><b>Note</b>: The contract quantity field is only applicable to commodity and currency.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        id:
+          type: "integer"
+          description: "Unique identifier for the security added in the system. This is the primary key of the holding resource.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          format: "int64"
+          readOnly: true
+        isShort:
+          type: "boolean"
+          description: "Indicates that the holding is a short trading.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        value:
+          $ref: "#/components/schemas/Money"
+        expirationDate:
+          type: "string"
+          description: "The date on which an option, right or warrant expires.<br><b>Note</b>: The expiration date field is only applicable to options and employee stock options.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        interestRate:
+          type: "number"
+          description: "The interest rate on a CD.<br><b>Note</b>: The interest rate field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        quantity:
+          type: "number"
+          description: "The quantity held for the holding.<br><b>Note</b>: Only for bonds the quantity field indicates the normalized quantity and not the quantity aggregated from the site. The quantity field is only applicable to restricted stock units/awards, performance units, currency, and commodity.<br>For insurance container, the field is only applicable for insurance annuity and variable life insurance types.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          format: "double"
+          readOnly: true
+        isManual:
+          type: "boolean"
+          description: "Indicates if a holding is aggregated from a site or it is a manual holding i.e. holding information manually provided by the user."
+          readOnly: true
+        accruedInterest:
+          $ref: "#/components/schemas/Money"
+        grantDate:
+          type: "string"
+          description: "The date on which equity awards like ESOP, RSU, etc., are issued or granted.<br><b>Note</b>: The grant date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        sedol:
+          type: "string"
+          description: "The SEDOL (Stock Exchange Daily Official List) is a set of security identifiers used in the United Kingdom and Ireland for clearing purposes.<br><b>Note</b>: The SEDOL field is only applicable to the trade related transactions<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        vestedSharesExercisable:
+          type: "number"
+          description: "The number of vested shares that can be exercised by the employee. It is usually equal to the vested quantity.<br><b>Note</b>: The vested shares exercisable field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        spread:
+          $ref: "#/components/schemas/Money"
+        accountId:
+          type: "integer"
+          description: "Unique identifier of the account to which the security is linked.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          format: "int64"
+          readOnly: true
+        enrichedDescription:
+          type: "string"
+          description: "The enrichedDescription is the security description of the normalized holding<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+        couponRate:
+          type: "number"
+          description: "The stated interest rate for a bond.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        createdDate:
+          type: "string"
+          description: "The date on which the holding is created in the Yodlee system.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+        accruedIncome:
+          $ref: "#/components/schemas/Money"
+        securityType:
+          type: "string"
+          description: "Indicates the security type of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          readOnly: true
+        providerAccountId:
+          type: "integer"
+          description: "Unique identifier for the user's association with the provider.<br><br><b>Applicable containers</b>: investment, insurance<br>"
+          format: "int64"
+          readOnly: true
+        unvestedQuantity:
+          type: "number"
+          description: "Indicates the number of unvested quantity or units.<br><b>Note</b>: The unvested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        costBasis:
+          $ref: "#/components/schemas/Money"
+        vestingDate:
+          type: "string"
+          description: "The date on which a RSU, RSA, or an employee stock options become vested.<br><b>Note</b>: The vesting date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        isin:
+          type: "string"
+          description: "The ISIN (International Securities Identification Number) is used worldwide to identify specific securities. It is equivalent to CUSIP for international markets.<br><br><b>Note</b>: The ISIN field is only applicable to the trade related transactions<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        strikePrice:
+          $ref: "#/components/schemas/Money"
+    ClientCredentialToken:
+      title: "ClientCredentialToken"
+      type: "object"
+      properties:
+        expiresIn:
+          type: "integer"
+          description: "Time in seconds after which the issued accessToken expires.<br><br><b>Endpoints</b>:<ul><li>POST /auth/token</li></ul>"
+          format: "int32"
+          readOnly: true
+        issuedAt:
+          type: "string"
+          description: "The date and time on which accessToken was created for the customer.<br><br><b>Endpoints</b>:<ul><li>POST /auth/token</li></ul>"
+          readOnly: true
+        accessToken:
+          type: "string"
+          description: "Access Token to access YSL 1.1 services.<br><br><b>Endpoints</b>:<ul><li>POST /auth/token</li></ul>"
+          readOnly: true
+    CreditAcceleratorOccurence:
+      title: "CreditAcceleratorOccurence"
+      type: "object"
+      properties:
+        count:
+          type: "number"
+          description: "Number of times the event has occurred within the given time period."
+          format: "double"
+          readOnly: true
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested."
+          readOnly: true
+    CreditAcceleratorDailyBalanceAnalysis:
+      title: "CreditAcceleratorDailyBalanceAnalysis"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorBalanceAnalysis"
+        currency:
+          type: "string"
+    CreditAcceleratorAllAccountAsset:
+      title: "CreditAcceleratorAllAccountAsset"
+      type: "object"
+      properties:
+        totalBalances:
+          type: "array"
+          description: "Total sum of currentBalance (Bank) and totalBalance (Investment) values across all Bank and Investment accounts, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorBalance"
+        totalInvestmentBalances:
+          type: "array"
+          description: "Total sum of Investment Balance values across all Investment accounts, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorBalance"
+        totalBankBalances:
+          type: "array"
+          description: "Total sum of currentBalance values across all Bank accounts, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorBalance"
+        adjustmentTxnSummary:
+          type: "array"
+          description: "Sum, count and average of Refund/Adjustment/Reimbursement Income transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        creditTxnWithoutTransferSummary:
+          type: "array"
+          description: "Sum, count, and average of all credit transactions (excluding transfers), grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        largeTransferOccurrences:
+          type: "array"
+          description: "For each time period, the number of times where transactions exceeded the large transaction amount, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+        savingsTxnSummary:
+          type: "array"
+          description: "Sum of savings transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceTxnSummary"
+        depositTxnSummary:
+          type: "array"
+          description: "Sum, count, and average of all deposit transactions, grouped by Currency.."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        largeDepositOccurrences:
+          type: "array"
+          description: "For each time period, the number of times where transactions exceeded the large transaction amount, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+        lowBalanceOccurrence:
+          $ref: "#/components/schemas/CreditAcceleratorLowBalanceOccurenceALL"
+        negativeBalanceOccurrences:
+          type: "array"
+          description: "For each time period, the number of times where Daily Balance is less than zero, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+        transferTxnSummary:
+          type: "array"
+          description: "Sum, count, and average of all transfer transactions, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        creditTxnWithTransferSummary:
+          type: "array"
+          description: "Sum, count, and average of all credit transactions (including transfers), grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        investmentHoldingSummary:
+          $ref: "#/components/schemas/CreditAcceleratorAllAccountInvestmentHoldingSummary"
+        nsfOccurrences:
+          type: "array"
+          description: "For each time period, the number of times NSF has occurred, grouped by Currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceOccurrence"
+    CreditAcceleratorAllAccountCashFlowAnalysis:
+      title: "CreditAcceleratorAllAccountCashFlowAnalysis"
+      type: "object"
+      properties:
+        cashInflowIncome:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as income."
+          format: "double"
+          readOnly: true
+        cashOutflowTransfers:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as transfers."
+          format: "double"
+          readOnly: true
+        cashOutflowTotalWithdrawalCountRatio:
+          type: "number"
+          description: "Ratio of Total Withdrawal count to total transactions count."
+          format: "double"
+          readOnly: true
+        cashOutflowWithdrawals:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as checks and withdrawals."
+          format: "double"
+          readOnly: true
+        cashOutflowTravelRatio:
+          type: "number"
+          description: "Ratio of Travel Transactions to Income as a percentage."
+          format: "double"
+          readOnly: true
+        cashOutflow:
+          type: "number"
+          description: "Sum of all cash outflow transactions."
+          format: "double"
+          readOnly: true
+        cashOutflowExpenses:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as expenses."
+          format: "double"
+          readOnly: true
+        adjustedCashInflow:
+          type: "number"
+          description: "Sum of all cash inflow transactions (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashLeftover:
+          type: "number"
+          description: "Cash inflow subtracted by cash outflow."
+          format: "double"
+          readOnly: true
+        cashOutflowDebitServicing:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as repayments of debt."
+          format: "double"
+          readOnly: true
+        cashOutflowWithdrawalToExpenseCountRatio:
+          type: "number"
+          description: "Ratio of Cash withdrawal count to Expense transaction count."
+          format: "double"
+          readOnly: true
+        cashOutflowBank:
+          type: "number"
+          description: "Sum of all cash outflow transactions for Bank accounts only, grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowBank:
+          type: "number"
+          description: "Sum of all cash outflow transactions (excluding large amounts) for Bank accounts only, grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashInflowTransfers:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as transfers (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashLeftoverBank:
+          type: "number"
+          description: "Bank cash inflow (excluding large amounts) subtracted by Bank cash outflow (excluding large amounts)."
+          format: "double"
+          readOnly: true
+        cashInflowDepositCountRatio:
+          type: "number"
+          description: "Ratio of Total Deposit count to total transactions count."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflow:
+          type: "number"
+          description: "Sum of all cash outflow transactions (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashInflowDeposits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as deposits (excluding income)."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowTransfers:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as checks and withdrawals."
+          format: "double"
+          readOnly: true
+        cashInflowBank:
+          type: "number"
+          description: "Sum of all cash inflow transactions for Bank accounts only, grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowDebitServicing:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as repayments of debt (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashLeftoverBank:
+          type: "number"
+          description: "Bank cash inflow subtracted by Bank cash outflow."
+          format: "double"
+          readOnly: true
+        adjustedCashLeftover:
+          type: "number"
+          description: "Cash inflow (excluding large amounts) subtracted by cash outflow (excluding large amounts)."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowTransfers:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as transfers (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashOutflowOtherDebits:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as other debits."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowBank:
+          type: "number"
+          description: "Sum of all cash inflow transactions (excluding large amounts) for Bank accounts only, grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashInflowServicesRatio:
+          type: "number"
+          description: "Ratio of Services/Supplies to Income as a percentage."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowOtherDebits:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as other debits (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowWithdrawals:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as checks and withdrawals (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowOtherCredits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as other credits (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashInflow:
+          type: "number"
+          description: "Sum of all cash inflow transactions."
+          format: "double"
+          readOnly: true
+        cashInflowOtherCredits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as other credits."
+          format: "double"
+          readOnly: true
+        timePeriod:
+          type: "string"
+          description: "Time intervals to consider up to the number of days the application was requested."
+          readOnly: true
+        adjustedCashInflowDeposits:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as deposits (excluding income and large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        adjustedCashOutflowExpenses:
+          type: "number"
+          description: "Sum of cash outflow transactions identified as expenses (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+        cashOutflowCashWithdrawalCountRatio:
+          type: "number"
+          description: "Ratio of Cash withdrawal count  to total withdrawal count."
+          format: "double"
+          readOnly: true
+        adjustedCashInflowIncome:
+          type: "number"
+          description: "Sum of cash inflow transactions identified as income (excluding large amounts), grouped by Currency."
+          format: "double"
+          readOnly: true
+    Coverage:
+      title: "Coverage"
+      type: "object"
+      properties:
+        amount:
+          type: "array"
+          description: "The coverage amount-related details.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CoverageAmount"
+        planType:
+          type: "string"
+          description: "The plan type for an insurance provided to an individual or an entity.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "PPO"
+          - "HMO"
+          - "UNKNOWN"
+        endDate:
+          type: "string"
+          description: "The date on which the coverage for the account ends or expires.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+        type:
+          type: "string"
+          description: "The type of coverage provided to an individual or an entity.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values:</b><br>"
+          readOnly: true
+          enum:
+          - "VISION"
+          - "DENTAL"
+          - "MEDICAL"
+          - "HEALTH"
+          - "DEATH_COVER"
+          - "TOTAL_PERMANENT_DISABILITY"
+          - "ACCIDENTAL_DEATH_COVER"
+          - "INCOME_PROTECTION"
+          - "DEATH_TOTAL_PERMANENT_DISABILITY"
+          - "OTHER"
+        startDate:
+          type: "string"
+          description: "The date on which the coverage for the account starts.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: insurance,investment<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+    CreditAcceleratorGenerateRequest:
+      title: "CreditAcceleratorGenerateRequest"
+      required:
+      - "configName"
+      type: "object"
+      properties:
+        configName:
+          type: "string"
+          description: "The config name using which the credit accelerator file generation was requested"
+        requestingFirm:
+          $ref: "#/components/schemas/CreditAcceleratorRequestingFirm"
+        accountIds:
+          type: "array"
+          description: "Mention account ids for which credit accelerator file generation is getting requested. mentioned accountid should belong to containers bank or loan or investment"
+          readOnly: true
+          items:
+            type: "integer"
+            format: "int64"
+    CreditAcceleratorAllAccountInvestmentHoldingSummary:
+      title: "CreditAcceleratorAllAccountInvestmentHoldingSummary"
+      type: "object"
+      properties:
+        classifications:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorClassification"
+        totalValues:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Money"
+    CreditAcceleratorPaymentBankTransferCode:
+      title: "CreditAcceleratorPaymentBankTransferCode"
+      type: "object"
+      properties:
+        sourceType:
+          type: "string"
+          description: "Source type"
+          readOnly: true
+        id:
+          type: "string"
+          description: "The FI's branch identification number.Additional Details: The routing number of the bank account in the United States. For non-United States accounts, it is the IFSC code (India), BSB number (Australia), and sort code (United Kingdom).\nAccount Type: Aggregated\nApplicable containers: bank, investment"
+          readOnly: true
+        type:
+          type: "string"
+          description: "The bank transfer code type varies depending on the region of the account origination. <br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: bank, investment<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values</b><br> * BSB: BSB is a Bank-State-Branch number used to identify the branch in Australia and is required for performing transfers.<br> * IFSC: IFSC is Indian Financial System Code. It is an alphanumeric code that is used to identify the particular branch in India and is required for electronic funds settlement.<br> * ROUTING_NUMBER: Bank routing number or routing transit number (RTN) is a nine digit number used in US to identify financial institution in a transaction. Most common transaction types where routing numbers are used are ACH and wire transfers.<br> * SORT_CODE: The sort code is a six-digit number used in UK to identify both the bank and the branch where the account is held.<br>"
+          readOnly: true
+          enum:
+          - "ROUTING_NUMBER"
+          - "BSB"
+          - "IFSC"
+          - "SORT_CODE"
+    CreditAcceleratorAllAccountBalanceTxnSummary:
+      title: "CreditAcceleratorAllAccountBalanceTxnSummary"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorTxnSummary"
+        currency:
+          type: "string"
+    CreditAcceleratorAccountHolder:
+      title: "CreditAcceleratorAccountHolder"
+      type: "object"
+      properties:
+        identifier:
+          type: "array"
+          description: "Identifiers of the account holder.<br><br><b>Aggregated / Manual</b>: Aggregated <br><b>Applicable containers</b>: bank<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/Identifier"
+        gender:
+          type: "string"
+          description: "Identifiers of the account holder.<br><br><b>Aggregated / Manual</b>: Aggregated <br><b>Applicable containers</b>: bank<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+        ownership:
+          type: "string"
+          description: "Indicates the ownership of the account.<br><br><b>Aggregated / Manual</b>: Aggregated <br><b>Applicable containers</b>: bank<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "PRIMARY"
+          - "SECONDARY"
+          - "CUSTODIAN"
+          - "OTHERS"
+          - "POWER_OF_ATTORNEY"
+          - "TRUSTEE"
+          - "JOINT_OWNER"
+          - "BENEFICIARY"
+          - "AAS"
+          - "BUSINESS"
+          - "DBA"
+          - "TRUST"
+        name:
+          $ref: "#/components/schemas/Name"
+        dateOfBirth:
+          type: "string"
+          description: "Holder's date of birth"
+          readOnly: true
+    Contact:
+      title: "Contact"
+      type: "object"
+      properties:
+        phone:
+          type: "string"
+          description: "Phone number of the merchant<br><br><b>Applicable containers</b>: bank,creditCard,investment,loan<br>"
+        email:
+          type: "string"
+          description: "Email Id of the merchant<br><br><b>Applicable containers</b>: bank,creditCard,investment,loan<br>"
+    CreditAcceleratorReportConfig:
+      title: "CreditAcceleratorReportConfig"
+      type: "object"
+      properties:
+        largeCreditAmt:
+          type: "number"
+          description: "Lower limit used to count the number of times the consumer's credit transactions exceeded this amount in Large Deposit Occurrence and Large Transfer Occurrence"
+          format: "double"
+          readOnly: true
+        lowBalAmt3:
+          type: "number"
+          description: "Third upper limit which is used to count the number of times the consumer''s Daily Balance amount fell below this amount in Low Balance Occurrence: Segment 3"
+          format: "double"
+          readOnly: true
+        lowBalAmt4:
+          type: "number"
+          description: "Fourth upper limit which is used to count the number of times the consumer''s Daily Balance amount fell below this amount in Low Balance Occurrence: Segment 4"
+          format: "double"
+          readOnly: true
+        lowBalAmt1:
+          type: "number"
+          description: "First upper limit which is used to count the number of times the consumer''s Daily Balance amount fell below this amount in Low Balance Occurrence: Segment 1"
+          format: "double"
+          readOnly: true
+        requestingFirm:
+          $ref: "#/components/schemas/CreditAcceleratorRequestingFirm"
+        lowBalAmt2:
+          type: "number"
+          description: "Second upper limit which is used to count the number of times the consumer''s Daily Balance amount fell below this amount in Low Balance Occurrence: Segment 2"
+          format: "double"
+          readOnly: true
+        days:
+          type: "integer"
+          description: "No of days for which the credit accelerator file is requested"
+          format: "int32"
+          readOnly: true
+    CreditAcceleratorAccountAnalysis:
+      title: "CreditAcceleratorAccountAnalysis"
+      type: "object"
+      properties:
+        income:
+          $ref: "#/components/schemas/CreditAcceleratorAccountIncome"
+        asset:
+          $ref: "#/components/schemas/CreditAcceleratorAccountAsset"
+        expense:
+          $ref: "#/components/schemas/CreditAcceleratorAccountExpense"
+    CreditAcceleratorInvestmentHoldingSummary:
+      title: "CreditAcceleratorInvestmentHoldingSummary"
+      type: "object"
+      properties:
+        totalValue:
+          $ref: "#/components/schemas/Money"
+        classification:
+          $ref: "#/components/schemas/CreditAcceleratorClassification"
+    ConfigsNotificationEvent:
+      title: "ConfigsNotificationEvent"
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Name of the event for which the customers must subscribe to receive notifications.<br><b>Valid Value:</b> Notification Events Name<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul><b>Applicable Values</b><br>"
+          enum:
+          - "REFRESH"
+          - "DATA_UPDATES"
+          - "AUTO_REFRESH_UPDATES"
+          - "LATEST_BALANCE_UPDATES"
+          - "CREDIT_ACCELERATOR_REPORT_UPDATES"
+        callbackUrl:
+          maxLength: 2147483647
+          minLength: 1
+          type: "string"
+          description: "URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul>"
+    CreditAcceleratorMerchant:
+      title: "CreditAcceleratorMerchant"
+      type: "object"
+      properties:
+        website:
+          type: "string"
+          description: "The website of the merchant.<br><br><b>Applicable containers</b>: bank,creditCard,investment,loan<br>"
+          readOnly: true
+        address:
+          $ref: "#/components/schemas/CreditAcceleratorAccountAddress"
+        contact:
+          $ref: "#/components/schemas/Contact"
+        categoryLabel:
+          type: "array"
+          description: "The business categories of the merchant.<br><br><b>Applicable containers</b>: bank,creditCard<br><b>Applicable Values</b><br>"
+          readOnly: true
+          items:
+            type: "string"
+        coordinates:
+          $ref: "#/components/schemas/Coordinates"
+        name:
+          type: "string"
+          description: "The name of the merchant.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        id:
+          type: "string"
+          description: "Identifier of the merchant.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br>"
+          readOnly: true
+        source:
+          type: "string"
+          description: "The source through which merchant information is retrieved.<br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br><b>Applicable Values</b><br>"
+          readOnly: true
+          enum:
+          - "YODLEE"
+          - "FACTUAL"
+        logoURL:
+          type: "string"
+          description: "The logoURL of the merchant.<br><br><b>Applicable containers</b>: bank,creditCard,investment,loan<br>"
+          readOnly: true
+    ConfigsNotificationResponse:
+      title: "ConfigsNotificationResponse"
+      type: "object"
+      properties:
+        event:
+          type: "array"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/ConfigsNotificationEvent"
+    CreditAcceleratorAllAccountExpense:
+      title: "CreditAcceleratorAllAccountExpense"
+      type: "object"
+      properties:
+        cashTxnSummary:
+          type: "array"
+          description: "Sum, count and average of cash withdrawal transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        entertainmentTxnSummary:
+          type: "array"
+          description: "Sum, count and average of restaurant/travel/entertainment transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        taxesTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of taxes expense transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        telecomTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of telecom expense transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        cashflow:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountCashFlow"
+        insuranceTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of insurance expense transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        charityTxnSummary:
+          type: "array"
+          description: "Sum, count and average of charitable giving transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        ccardTxnSummary:
+          type: "array"
+          description: "Sum, count and average of credit card payment transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        rentTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of rent expense transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        utilitiesTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of utilities expense transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        educationTxnSummary:
+          type: "array"
+          description: "Sum, count, average and list of education expense transactions."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+        loanTxnSummary:
+          type: "array"
+          description: "Sum, count and average of loan repayment transactions, grouped by currency."
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAllAccountBalanceSummary"
+    CreditAcceleratorDailyBalance:
+      title: "CreditAcceleratorDailyBalance"
+      type: "object"
+      properties:
+        date:
+          type: "string"
+          description: "Daily balance date"
+          readOnly: true
+        amount:
+          type: "number"
+          description: "Daily balance amount"
+          format: "double"
+          readOnly: true
+        currency:
+          type: "string"
+          description: "Currency which the amount is in."
+          readOnly: true
+    AssetClassification:
+      title: "AssetClassification"
+      type: "object"
+      properties:
+        allocation:
+          type: "number"
+          description: "The allocation percentage of the holding.<br><br><b>Required Feature Enablement</b>: Asset classification feature<br><br><b>Applicable containers</b>: investment<br>"
+          format: "double"
+          readOnly: true
+        classificationType:
+          type: "string"
+          description: "The type of classification to which the investment belongs (assetClass, country, sector, and style).<br><b>Required Feature Enablement</b>: Asset classification feature<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+        classificationValue:
+          type: "string"
+          description: "The value for each classificationType.<br><b>Required Feature Enablement</b>: Asset classification feature<br><br><b>Applicable containers</b>: investment<br>"
+          readOnly: true
+    CreditAcceleratorAccountProfile:
+      title: "CreditAcceleratorAccountProfile"
+      type: "object"
+      properties:
+        identifier:
+          type: "array"
+          description: "Identifiers available in the profile page of the account.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/Identifier"
+        address:
+          type: "array"
+          description: "Address available in the profile page of the account.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorAccountAddress"
+        phoneNumber:
+          type: "array"
+          description: "Phone number available in the profile page of the account.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/PhoneNumber"
+        email:
+          type: "array"
+          description: "Email Id available in the profile page of the account.<br><br><b>Account Type</b>: Aggregated<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li></ul>"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/Email"
+    CreditAcceleratorAllAccountBalanceOccurrence:
+      title: "CreditAcceleratorAllAccountBalanceOccurrence"
+      type: "object"
+      properties:
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreditAcceleratorOccurence"
+        currency:
+          type: "string"
+    PhoneNumber:
+      title: "PhoneNumber"
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          description: "type of phone number"
+          readOnly: true
+          enum:
+          - "HOME"
+          - "WORK"
+          - "LANDLINE"
+          - "MOBILE"
+        value:
+          type: "string"
+          description: "Phone Number"
+          readOnly: true
