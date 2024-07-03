@@ -6,9 +6,10 @@ description: >-
 url: >-
   https://raw.githubusercontent.com/apis-json/artisanal/main/apis/factset/apis.yml
 created: 2024/04/14
-modified: 2024/04/14
-specificationVersion: '0.17'
-tags: []
+modified: '2024-07-03'
+specificationVersion: '0.18'
+tags:
+  - Financial
 apis:
   - name: Symphony Pod API
     description: >-
@@ -71,3 +72,7 @@ maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
 aid: symphony
+score: 32
+overlays:
+  - type: API Evangelist Ratings
+    url: /overlays/api-evangelist-ratings.yml
