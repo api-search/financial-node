@@ -7,9 +7,10 @@ description: >-
   wellness.
 url: https://raw.githubusercontent.com/apis-json/artisanal/main/apis/envestnet.yml
 created: 2024/04/14
-modified: 2024/04/14
-specificationVersion: '0.16'
-tags: []
+modified: '2024-07-03'
+specificationVersion: '0.18'
+tags:
+  - Financial
 apis:
   - name: Evestnet Account Aggregation
     description: >-
@@ -31,3 +32,7 @@ maintainers:
     url: http://apievangelist.com
     email: info@apievangelist.com
 aid: envestnet
+score: 12
+overlays:
+  - type: API Evangelist Ratings
+    url: /overlays/api-evangelist-ratings.yml
