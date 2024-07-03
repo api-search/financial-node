@@ -7,8 +7,8 @@ image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jp
 url: >-
   https://raw.githubusercontent.com/apis-json/artisanal/main/apis/factset/apis.yml
 created: 2024/03/02
-modified: 2024/03/02
-specificationVersion: '0.17'
+modified: '2024-07-03'
+specificationVersion: '0.18'
 tags: []
 apis:
   - name: Factset PA Engine API
@@ -19,7 +19,46 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/pa-engine-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Accounts
+      - Analytics
+      - Directory
+      - Lookups
+      - Paths
+      - Sub Directories
+      - Columns
+      - Engines
+      - Settings
+      - Column Statistics
+      - Statistics
+      - Components
+      - Currencies
+      - Absolute
+      - Convert
+      - Dates
+      - Format
+      - Documents
+      - PA3
+      - Sub Directories
+      - Frequencies
+      - Groups
+      - Grouping
+      - Linked
+      - Templates
+      - Calculations
+      - Runs
+      - Parameters
+      - Cancels
+      - Status
+      - Results
+      - Units
+      - Pricing
+      - Sources
+      - Templated
+      - Unlinked
+      - Details
+      - Default
+      - Types
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/pa-engine-api#overview
@@ -47,7 +86,20 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/formula-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - (FQL
+      - Data
+      - Defined
+      - Formulas
+      - Items
+      - Series
+      - Time
+      - Universes
+      - (Screening
+      - Sectional
+      - Batches
+      - Status
+      - Results
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/formula-api#overview
@@ -75,7 +127,35 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/factset-global-prices-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Close
+      - End Of Day
+      - Factset
+      - Global
+      - High
+      - Low
+      - Prices
+      - Securities
+      - End Of Day
+      - Large
+      - Actions
+      - Corporate
+      - Information
+      - Annualized
+      - Div
+      - Dividends
+      - Ends
+      - Indicated
+      - Dates
+      - Given
+      - Ranges
+      - '`ids`'
+      - Outstanding
+      - Security
+      - Shares
+      - Batches
+      - Status
+      - Results
     properties:
       - type: Documentation
         url: >-
@@ -107,7 +187,16 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/ofdb-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Databases
+      - Jobs
+      - Status
+      - Audit
+      - Paths
+      - Statistics
+      - Fields
+      - Symbols
+      - Dates
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/ofdb-api#overview
@@ -135,7 +224,18 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/signals-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Events
+      - Headlines
+      - Details
+      - Adaptive
+      - Cards
+      - Entities
+      - Data
+      - Dictionaries
+      - Signals
+      - Themes
+      - Categories
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/signals-api#overview
@@ -162,7 +262,29 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/natural-language-processing-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Endpoints
+      - Extraction
+      - Jobs
+      - Theme
+      - Themes
+      - Results
+      - Sentiments
+      - Completions
+      - Status
+      - Generate
+      - Headlines
+      - Summarization
+      - Text
+      - Summaries
+      - Summarize
+      - Detect
+      - Entities
+      - Obtain
+      - Answers
+      - Questions
+      - Submit
+      - Q&A
     properties:
       - type: Documentation
         url: >-
@@ -196,7 +318,11 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/universal-screening-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Archive
+      - Jobs
+      - Calculate
+      - Status
     properties:
       - type: Documentation
         url: >-
@@ -229,7 +355,24 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/portfolio-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Accounts
+      - Analytics
+      - Existing
+      - Models
+      - Names
+      - Paths
+      - Takes
+      - Data
+      - Endpoints
+      - Underlying
+      - Dates
+      - Entries
+      - Previously
+      - Specific
+      - Symbols
+      - Items
+      - Schemas
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/portfolio-api#overview
@@ -258,7 +401,32 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/spar-engine-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Accounts
+      - Analytics
+      - Details
+      - Engines
+      - Paths
+      - SPAR
+      - Types
+      - Directory
+      - Lookups
+      - Sub Directories
+      - Benchmark
+      - Benchmarks
+      - Components
+      - Currencies
+      - Documents
+      - SPAR3
+      - Sub Directories
+      - Frequencies
+      - Calculations
+      - Runs
+      - Parameters
+      - Cancels
+      - Status
+      - Results
+      - Units
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/spar-engine-api#overview
@@ -287,7 +455,52 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/factset-prices-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Close
+      - End Of Day
+      - Factset
+      - High
+      - Low
+      - Prices
+      - Securities
+      - End Of Day
+      - Large
+      - Income
+      - Pricing
+      - Dates
+      - Ranges
+      - Details
+      - References
+      - Security
+      - Given
+      - Period
+      - Rolling
+      - '`ids`'
+      - Annualized
+      - Compound
+      - Performance
+      - Snapshots
+      - Totals
+      - Div
+      - Dividends
+      - Ends
+      - Information
+      - History
+      - Splits
+      - Shares
+      - Companies
+      - Frequency
+      - Levels
+      - Market
+      - Value
+      - Values
+      - Databases
+      - Latest
+      - Relative
+      - Rollover
+      - Batches
+      - Status
+      - Results
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/factset-prices-api#overview
@@ -318,7 +531,53 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/factset-concordance-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Attributes
+      - Candidates
+      - Concordance
+      - Entities
+      - Factset
+      - Match
+      - Matches
+      - Names
+      - Single
+      - Up
+      - Creating
+      - Files
+      - Inputs
+      - Tasks
+      - Status
+      - Users
+      - Decisions
+      - Universes
+      - Mapping
+      - Saved
+      - Clients
+      - Ids
+      - Large
+      - People
+      - Existing
+      - Metadata
+      - Fetch
+      - Given
+      - Statistics
+      - Saves
+      - Single Mapping
+      - Specified
+      - Single Mapping
+      - Perform
+      - Search
+      - Snowflake
+      - Snowflake Friendly
+      - Save
+      - Find
+      - Firstname,
+      - Lastname
+      - Middlename
+      - Name People
+      - Person's
+      - Potential
+      - Using
     properties:
       - type: Documentation
         url: >-
@@ -348,7 +607,79 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/factset-esg-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - (SASB)
+      - Accounting
+      - Based
+      - Board
+      - Categories
+      - Defined
+      - ESG
+      - Factset
+      - Long Term,
+      - Momentum
+      - Scores
+      - Short Term,
+      - Standards
+      - Sustainability
+      - Large
+      - Long Term,
+      - Short Term,
+      - Dates
+      - Ids
+      - Rankings
+      - Ranks
+      - Ranges
+      - Specified
+      - Array
+      - Flat
+      - Inputs
+      - Keys
+      - Named
+      - Type(s)
+      - Value
+      - Development
+      - Goals
+      - Long Term,
+      - Nations
+      - Short Term,
+      - Sustainable
+      - United
+      - Long Term,
+      - Short Term,
+      - (PAI)
+      - (SFDR)
+      - Adverse
+      - Compliant
+      - Data
+      - Disclosure
+      - Finance
+      - Impact
+      - Principle
+      - Regulations
+      - Reporting
+      - SFDR
+      - Support
+      - Enable
+      - Events
+      - Important
+      - Management
+      - Most
+      - Negative
+      - Portfolio
+      - Positive
+      - Spotlights
+      - Strategies
+      - Systematic
+      - Timely
+      - Trading
+      - Articles
+      - Days
+      - Lens
+      - Previous
+      - SASB
+      - Tagged
+      - SDG
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/factset-esg-api#overview
@@ -375,7 +706,15 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/factset-digital-cards
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Adaptive
+      - Cards
+      - Companies
+      - Components
+      - Digital
+      - Format
+      - Microsoft
+      - Multiple
     properties:
       - type: Documentation
         url: >-
@@ -408,7 +747,28 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/vault-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Analytics
+      - Components
+      - Engines
+      - Vault
+      - Configurations
+      - Absolute
+      - Convert
+      - Dates
+      - Format
+      - Directory
+      - Documents
+      - Paths
+      - Sub Directories
+      - Frequencies
+      - Calculations
+      - Runs
+      - Parameters
+      - Cancels
+      - Status
+      - Results
+      - Units
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/vault-api#overview
@@ -436,7 +796,18 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/chart-generation-service
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Catalog
+      - Categories
+      - Chart
+      - Charts
+      - Images
+      - Services
+      - Templates
+      - Used
+      - Formats
+      - JPEG
+      - PNG
     properties:
       - type: Documentation
         url: >-
@@ -470,7 +841,29 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/real-time-news-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Articles
+      - Details
+      - News
+      - Chains
+      - Constituents
+      - Given
+      - Index
+      - Indices
+      - Instruments
+      - Contain
+      - Kind
+      - Kinds
+      - Media
+      - Specific
+      - Search
+      - Text
+      - Using
+      - Types
+      - Distributors
+      - Publishers
+      - Provided
+      - Names
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/real-time-news-api#overview
@@ -501,7 +894,35 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/vermilion-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Data
+      - Data Source
+      - Sources
+      - Tenant
+      - Code
+      - Entities
+      - Values
+      - Definitions
+      - Reports
+      - Generate
+      - Generates
+      - Instances
+      - Cancels
+      - Generation
+      - Based
+      - Files
+      - Generated
+      - Names
+      - Results
+      - Logs
+      - SCIM
+      - Users
+      - VRS
+      - Creates
+      - Attributes
+      - Groups
+      - Roles
+      - To/from
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/vermilion-api#overview
@@ -530,7 +951,33 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/factset-estimates-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Consensus
+      - Estimates
+      - Factset
+      - Fiscal
+      - Ids
+      - Periods
+      - Rolling
+      - Fact
+      - Sets
+      - Data
+      - Detail
+      - Buy
+      - Fetch
+      - Hold
+      - Overweight
+      - Ratings
+      - Sell
+      - Underweight
+      - Brokers
+      - Surprise
+      - Geographic
+      - Products
+      - Segments
+      - Available
+      - Metrics
+      - Ratios
     properties:
       - type: Documentation
         url: >-
@@ -562,7 +1009,14 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/issue-tracker-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Creates
+      - Issues
+      - Trackers
+      - Details
+      - Matched
+      - Comments
+      - Posts
     properties:
       - type: Documentation
         url: https://developer.factset.com/api-catalog/issue-tracker-api#overview
@@ -591,7 +1045,26 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/axioma-equity-optimizer-api
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Accounts
+      - Analytics
+      - Directory
+      - Lookups
+      - Paths
+      - Sub Directories
+      - Axioma
+      - Engines
+      - Optimizations
+      - Runs
+      - Parameters
+      - Cancels
+      - Status
+      - Results
+      - Currencies
+      - Documents
+      - Equity
+      - Strategies
+      - Sub Directories
     properties:
       - type: Documentation
         url: >-
@@ -621,7 +1094,25 @@ apis:
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     humanURL: https://developer.factset.com/api-catalog/barra-portfolio-optimizer
     baseURL: https://example.com
-    tags: []
+    tags:
+      - Accounts
+      - Analytics
+      - Directory
+      - Lookups
+      - Paths
+      - Sub Directories
+      - BPM
+      - Engines
+      - Optimizations
+      - Runs
+      - Parameters
+      - Cancels
+      - Status
+      - Results
+      - Currencies
+      - Documents
+      - Strategies
+      - Sub Directories
     properties:
       - type: Documentation
         url: >-
@@ -3107,4 +3598,5 @@ overlays:
   - type: API Evangelist Ratings
     url: overlays/apis-io-search.yml
 aid: factset
+
 ---
