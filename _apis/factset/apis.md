@@ -4,8 +4,7 @@ description: >-
   FactSet APIs connect applications and workflows to an extensive universe of
   content and functionality.
 image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-url: >-
-  https://raw.githubusercontent.com/apis-json/artisanal/main/apis/factset/apis.yml
+url: https://raw.githubusercontent.com/api-search/financial/main/_apis/factset/apis.md
 created: 2024/03/02
 modified: '2024-07-03'
 specificationVersion: '0.18'

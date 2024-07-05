@@ -2,8 +2,7 @@ name: London Stock Exchange Group
 description: >-
   London Stock Exchange Group plc is a United Kingdom-based stock exchange and
   financial information company headquartered in the City of London, England.
-url: >-
-  https://raw.githubusercontent.com/apis-json/artisanal/main/apis/factset/apis.yml
+url: https://raw.githubusercontent.com/api-search/financial/main/_data/london-stock-exchange-group/overlays/apis-io-search.yml
 created: 2024/04/14
 modified: '2024-07-03'
 specificationVersion: '0.18'
