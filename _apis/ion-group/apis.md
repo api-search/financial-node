@@ -1,4 +1,3 @@
----
 name: Ion Group
 description: >-
   We’re visionary innovators who are delivering mission-critical trading and
@@ -11,7 +10,8 @@ description: >-
   and enabling our customers to transform their business. And we embrace the
   power of community, working with each other and with our customers to succeed
   through a positive culture of continuous improvement.
-url: https://raw.githubusercontent.com/api-search/financial/main/_apis/ion-group/apis.md
+url: >-
+  https://raw.githubusercontent.com/api-search/financial/main/_apis/ion-group/apis.md
 created: 2024/04/14
 modified: '2024-07-03'
 specificationVersion: '0.18'
@@ -46,5 +46,3 @@ maintainers:
     url: http://apievangelist.com
     email: info@apievangelist.com
 aid: ion-group
-
----

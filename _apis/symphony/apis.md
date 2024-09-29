@@ -1,10 +1,10 @@
----
 name: Symphony
 description: >-
   Streamline work and automate workflows with bots and apps. Build integrations
   from a simple hello world example to fully fledged financial integrations on
   Symphony.
-url: https://raw.githubusercontent.com/api-search/financial/main/_apis/symphony/apis.md
+url: >-
+  https://raw.githubusercontent.com/api-search/financial/main/_apis/symphony/apis.md
 created: 2024/04/14
 modified: '2024-07-03'
 specificationVersion: '0.18'
@@ -71,5 +71,3 @@ maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
 aid: symphony
-
----

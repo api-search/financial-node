@@ -1,4 +1,3 @@
----
 name: Envestnet
 description: >-
   Envestnet. An ever-evolving network of data-driven services, products, tools,
@@ -6,7 +5,8 @@ description: >-
   robust financial wellness ecosystem offers solutions for every role in the
   financial advice industry. Supercharge practice growth and enable financial
   wellness.
-url: https://raw.githubusercontent.com/api-search/financial/main/_apis/envestnet/apis.md
+url: >-
+  https://raw.githubusercontent.com/api-search/financial/main/_apis/envestnet/apis.md
 created: 2024/04/14
 modified: '2024-07-03'
 specificationVersion: '0.18'
@@ -32,5 +32,3 @@ maintainers:
     url: http://apievangelist.com
     email: info@apievangelist.com
 aid: envestnet
-
----
