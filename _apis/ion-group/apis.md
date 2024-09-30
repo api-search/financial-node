@@ -1,3 +1,4 @@
+---
 name: Ion Group
 description: >-
   We’re visionary innovators who are delivering mission-critical trading and
@@ -46,3 +47,4 @@ maintainers:
     url: http://apievangelist.com
     email: info@apievangelist.com
 aid: ion-group
+---

@@ -1,3 +1,4 @@
+---
 name: London Stock Exchange Group
 description: >-
   London Stock Exchange Group plc is a United Kingdom-based stock exchange and
@@ -22,3 +23,4 @@ maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
 aid: london-stock-exchange-group
+---

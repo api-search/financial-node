@@ -1,3 +1,4 @@
+---
 name: Symphony
 description: >-
   Streamline work and automate workflows with bots and apps. Build integrations
@@ -71,3 +72,4 @@ maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
 aid: symphony
+---

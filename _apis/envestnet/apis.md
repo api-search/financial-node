@@ -1,3 +1,4 @@
+---
 name: Envestnet
 description: >-
   Envestnet. An ever-evolving network of data-driven services, products, tools,
@@ -32,3 +33,4 @@ maintainers:
     url: http://apievangelist.com
     email: info@apievangelist.com
 aid: envestnet
+---
